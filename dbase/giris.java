@@ -15,6 +15,8 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class giris extends JFrame {
 
@@ -23,6 +25,7 @@ public class giris extends JFrame {
 	private JTextField txt_sifre;
 	static String ad;
 	static String sifre;
+	static String tur;
 
 	/**
 	 * Launch the application.
@@ -68,25 +71,63 @@ public class giris extends JFrame {
 		txt_sifre.setBounds(124, 87, 116, 22);
 		contentPane.add(txt_sifre);
 		txt_sifre.setColumns(10);
-		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"admin", "normal", "premium"}));
+		comboBox.setBounds(124, 120, 116, 22);
+		contentPane.add(comboBox);
 		JButton btnNewButton = new JButton("Giri\u015F");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ad = txt_ad.getText();
 				sifre = txt_sifre.getText();
+				tur=(String) comboBox.getSelectedItem();
+				
+			
+				//int secilen=
 				
 				String sql_sorgu = "select count(idkull) as giris from kull where kull_ad='"+ad+
-						"' and sifre='"+sifre+"'";
+						"' and sifre='"+sifre+"'"+" and kull_tur='"+tur+"'";
 				
+			
+				
+				
+		
+				
+				 
 				ResultSet myRs = baglanti.yap();
 				myRs = baglanti.sorgula(sql_sorgu);
 				
 				try {
 					while(myRs.next()){
+						
+						
+					
+						
 						if(myRs.getInt("giris")==1) {
-							fm1 ekr = new fm1();
-							ekr.setVisible(true);
-							setVisible(false);
+							if(tur=="admin") {
+								fm1 ekr = new fm1();
+								ekr.setVisible(true);
+								setVisible(false);
+								
+							}
+							if(tur=="normal") {
+								frm2 ekr = new frm2();
+								ekr.setVisible(true);
+								setVisible(false);
+								
+							}
+							if(tur=="premium") {
+								frm3 ekr = new frm3();
+								ekr.setVisible(true);
+								setVisible(false);
+								
+							}
+							
+								
+							
+							
+							
+							
 						} else { btnNewButton.setText("hatalý giriþ"); }
 					}
 				} catch (SQLException e1) {
@@ -97,9 +138,18 @@ public class giris extends JFrame {
 				
 				
 				
+				
+				
+				
 			}
 		});
-		btnNewButton.setBounds(134, 122, 97, 25);
+		btnNewButton.setBounds(143, 149, 97, 25);
 		contentPane.add(btnNewButton);
+		
+		JLabel lblNewLabel_2 = new JLabel("tur");
+		lblNewLabel_2.setBounds(42, 123, 46, 14);
+		contentPane.add(lblNewLabel_2);
+		
+		
 	}
 }
