@@ -27,6 +27,49 @@ public class baglanti {
     }
 	   return myRs;
 	}
+	static ResultSet yap1(String secilen1) {
+		 ResultSet myRs=null;
+	try
+   {
+	  String myDriver = "com.mysql.jdbc.Driver";
+     String db = "jdbc:mysql://localhost/deneme";
+     Class.forName(myDriver);
+     conn = DriverManager.getConnection(db, "root", "1234");
+     String sql_sorgu="select *from sarki where sarki_Id in (select sarki_Id from liste where idkull=1 and liste_adi='"+secilen1+"')";
+     System.out.println(sql_sorgu);
+     st = conn.createStatement();
+    myRs = st.executeQuery(sql_sorgu);
+   }
+  
+   catch (Exception a)
+   {
+     System.err.println("Hata ! ");
+     System.err.println(a.getMessage());
+   }
+	   return myRs;
+	}
+	static ResultSet yap2(String sql_sorgu) {
+		 ResultSet myRs=null;
+	try
+  {
+	  String myDriver = "com.mysql.jdbc.Driver";
+    String db = "jdbc:mysql://localhost/deneme";
+    Class.forName(myDriver);
+    conn = DriverManager.getConnection(db, "root", "1234");
+    //String sql_sorgu;
+    System.out.println(sql_sorgu);
+    st = conn.createStatement();
+   myRs = st.executeQuery(sql_sorgu);
+  }
+ 
+  catch (Exception a)
+  {
+    System.err.println("Hata ! ");
+    System.err.println(a.getMessage());
+  }
+	   return myRs;
+	}
+	
 	static void ekle(String sql_sorgu) {
 		try {
 			st.executeUpdate(sql_sorgu);

@@ -82,11 +82,9 @@ public class giris extends JFrame {
 				sifre = txt_sifre.getText();
 				tur=(String) comboBox.getSelectedItem();
 				
-			
-				//int secilen=
-				
+	
 				String sql_sorgu = "select count(idkull) as giris from kull where kull_ad='"+ad+
-						"' and sifre='"+sifre+"'"+" and kull_tur='"+tur+"'";
+						"' and sifre='"+sifre+"'"+" and kull_uyelik='"+tur+"'";
 				
 			
 				
