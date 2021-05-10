@@ -311,26 +311,36 @@ public class frm2 extends JFrame {
 		comboBox_1.setBounds(1111, 52, 79, 22);
 		contentPane.add(comboBox_1);
 		
-		ResultSet myRs1;
-		String kullanici=lbl_kullanici.getText();
-		String sql_sorgu_kullanici="select idkull from kull where kull_ad='"+kullanici+"'";
-		myRs1=baglanti.yap2(sql_sorgu_kullanici);
-		try {
-			while(myRs1.next()) {
-				System.out.println(myRs1);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	
+		
+		
 	JButton btnListele1 = new JButton("Listele");
 		btnListele1.addActionListener(new ActionListener() {	
-	
+			
 			public void actionPerformed(ActionEvent e) {
+				
+				ResultSet myRs1;
+				String kullanici=lbl_kullanici.getText();
+				String sql_sorgu_kullanici="select idkull from kull where kull_ad='"+kullanici+"'";
+				myRs1=baglanti.yap2(sql_sorgu_kullanici);
+				String kullanici_id="";
+			
+				try {
+					
+					while(myRs1.next()) {
+						 kullanici_id=myRs1.getString("idkull");
+						
+					}
+					
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}	
+				int kull_id=Integer.parseInt(kullanici_id);
+				
+				System.out.println(kullanici_id);
+				
 				String secilen1=(String) comboBox_1.getSelectedItem();
 				modelim1.setRowCount(0);
-				ResultSet myRs=baglanti.yap1(secilen1);
+				ResultSet myRs=baglanti.yap1(secilen1,kull_id);
 				
 				try {
 					while(myRs.next()) {

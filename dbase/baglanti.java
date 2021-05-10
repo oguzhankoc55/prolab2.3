@@ -27,7 +27,7 @@ public class baglanti {
     }
 	   return myRs;
 	}
-	static ResultSet yap1(String secilen1) {
+	static ResultSet yap1(String secilen1,int kull_id) {
 		 ResultSet myRs=null;
 	try
    {
@@ -35,7 +35,7 @@ public class baglanti {
      String db = "jdbc:mysql://localhost/deneme";
      Class.forName(myDriver);
      conn = DriverManager.getConnection(db, "root", "1234");
-     String sql_sorgu="select *from sarki where sarki_Id in (select sarki_Id from liste where idkull=1 and liste_adi='"+secilen1+"')";
+     String sql_sorgu="select *from sarki where sarki_Id in (select sarki_Id from liste where idkull="+kull_id+" and liste_adi='"+secilen1+"')";
      System.out.println(sql_sorgu);
      st = conn.createStatement();
     myRs = st.executeQuery(sql_sorgu);
