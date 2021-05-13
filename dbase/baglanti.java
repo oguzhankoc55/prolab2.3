@@ -27,6 +27,26 @@ public class baglanti {
     }
 	   return myRs;
 	}
+	static ResultSet yap4() {
+		 ResultSet myRs=null;
+	try
+   {
+	  String myDriver = "com.mysql.jdbc.Driver";
+	  String db = "jdbc:mysql://localhost/prolab";
+     Class.forName(myDriver);
+     conn = DriverManager.getConnection(db, "root", "1234");
+    String sorgu = "SELECT * FROM sarki";
+     st = conn.createStatement();
+    myRs = st.executeQuery(sorgu);
+   }
+  
+   catch (Exception a)
+   {
+     System.err.println("Hata ! ");
+     System.err.println(a.getMessage());
+   }
+	   return myRs;
+	}
 	static ResultSet yap1(String secilen1,int kull_id) {
 		 ResultSet myRs=null;
 	try
@@ -97,6 +117,17 @@ public class baglanti {
 		}
 	}
 	static ResultSet sorgula(String sql_sorgu) {
+		 ResultSet myRs=null;
+		 try {
+			myRs = st.executeQuery(sql_sorgu);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	   return myRs;
+	}
+	static ResultSet sorgula4(String sql_sorgu) {
 		 ResultSet myRs=null;
 		 try {
 			myRs = st.executeQuery(sql_sorgu);

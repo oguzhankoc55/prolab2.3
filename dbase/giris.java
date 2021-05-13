@@ -29,8 +29,8 @@ public class giris extends JFrame {
 	private JTextField txt_sifre;
 	static String ad;
 	static String sifre;
-	static String tur="";
-
+	static int tur;
+	static int sayac=0;
 	/**
 	 * Launch the application.
 	 */
@@ -96,72 +96,9 @@ public class giris extends JFrame {
 		sifre_lbl.setVisible(false);
 		ad_lbl.setVisible(false);
 		
-		giris_btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ad = txt_ad.getText();
-				sifre = txt_sifre.getText();
-				
-				/*String sql_sorgu = "select count(kul_id) as giris from kullanici where kul_ad='"+ad+
-						"' and kul_sifre='"+sifre+"'"; 
-*/
-				String sql_sorgu = "SELECT  count(kul_id) , kul_uyelik FROM kullanici WHERE kul_ad='"+ad+"' and kul_sifre='"+sifre+"'";
-
-				ResultSet myRs = baglanti.yap();
-				myRs = baglanti.sorgula(sql_sorgu);
-				
-				try {
-					while(myRs.next()){
-				
-						if(myRs.getInt("count(kul_id)")==1) {
-							
-								tur=myRs.getString("kul_uyelik");
-								System.out.println(tur);
-							
-							
-							if(myRs.getString("kul_uyelik")=="admin") {
-								fm1 ekr = new fm1();
-								ekr.setVisible(true);
-								setVisible(false);
-								
-							}
-							else if(tur=="normal") {
-								frm2 ekr = new frm2();
-								ekr.setVisible(true);
-								setVisible(false);
-								
-							}
-							else if(tur=="premium") {
-								frm3 ekr = new frm3();
-								ekr.setVisible(true);
-								setVisible(false);
-								
-							}
-							
-							
-							
-							
-							
-							
-						} else { giris_btn.setText("hatalý giriþ"); }
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				
-				
-				
-				
-				
-			}
-		});
-		giris_btn.setBounds(140, 206, 97, 25);
-		contentPane.add(giris_btn);
-	
 		admin_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//String tur="admin";
+				sayac++;
 				secin_lbl.setVisible(false);
 				admin_btn.setVisible(false);
 				kullanici_btn.setVisible(false);
@@ -194,8 +131,76 @@ public class giris extends JFrame {
 				
 			}
 		});
+		giris_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ad = txt_ad.getText();
+				sifre = txt_sifre.getText();
+				
+				/*String sql_sorgu = "select count(kul_id) as giris from kullanici where kul_ad='"+ad+
+						"' and kul_sifre='"+sifre+"'"; 
+*/
+				String sql_sorgu = "SELECT  count(kul_id) , kul_uyelik_id FROM kullanici WHERE kul_ad='"+ad+"' and kul_sifre='"+sifre+"'";
+
+				ResultSet myRs = baglanti.yap();
+				myRs = baglanti.sorgula(sql_sorgu);
+				
+				try {
+					
+					while(myRs.next()){
+				
+						if(myRs.getInt("count(kul_id)")==1) {
+								 
+							tur=myRs.getInt("kul_uyelik_id");
+								//System.out.println(tur);
+							
+							if(sayac>0) {
+								if(tur==3) {
+								fm1 ekr = new fm1();
+								ekr.setVisible(true);
+								setVisible(false);
+								
+							}
+								
+							}
+							
+							else if(tur==1) {
+								frm2 ekr = new frm2();
+								ekr.setVisible(true);
+								setVisible(false);
+								
+							}
+							else if(tur==2) {
+								frm3 ekr = new frm3();
+								ekr.setVisible(true);
+								setVisible(false);
+								
+							} giris_btn.setText("hatalý giriþ"); 
+							
+							
+							
+							
+							
+						}	
+						
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				
+				
+				
+				
+			}
+				});
+		giris_btn.setBounds(140, 206, 97, 25);
+		contentPane.add(giris_btn);
+	
+		
+		
 		
 		
 	}
 }
-
