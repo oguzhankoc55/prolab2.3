@@ -17,6 +17,10 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JRadioButton;
+import javax.swing.JCheckBox;
+import javax.swing.JToggleButton;
+import javax.swing.JSeparator;
 
 public class giris extends JFrame {
 
@@ -54,53 +58,58 @@ public class giris extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Kullan\u0131c\u0131 ad\u0131");
-		lblNewLabel.setBounds(42, 55, 70, 16);
-		contentPane.add(lblNewLabel);
+		JLabel ad_lbl = new JLabel("Kullan\u0131c\u0131 ad\u0131");
+		ad_lbl.setBounds(56, 106, 70, 16);
+		contentPane.add(ad_lbl);
 		
-		JLabel lblNewLabel_1 = new JLabel("\u015Eifre");
-		lblNewLabel_1.setBounds(42, 90, 56, 16);
-		contentPane.add(lblNewLabel_1);
+		JLabel sifre_lbl = new JLabel("\u015Eifre");
+		sifre_lbl.setBounds(56, 152, 56, 16);
+		contentPane.add(sifre_lbl);
 		
 		txt_ad = new JTextField();
-		txt_ad.setBounds(124, 52, 116, 22);
+		txt_ad.setBounds(140, 103, 116, 22);
 		contentPane.add(txt_ad);
 		txt_ad.setColumns(10);
 		
 		txt_sifre = new JTextField();
-		txt_sifre.setBounds(124, 87, 116, 22);
+		txt_sifre.setBounds(140, 149, 116, 22);
 		contentPane.add(txt_sifre);
 		txt_sifre.setColumns(10);
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"admin", "normal", "premium"}));
-		comboBox.setBounds(124, 120, 116, 22);
-		contentPane.add(comboBox);
-		JButton btnNewButton = new JButton("Giri\u015F");
-		btnNewButton.addActionListener(new ActionListener() {
+		
+		JButton admin_btn = new JButton("Admin");
+		admin_btn.setBounds(68, 55, 89, 39);
+		contentPane.add(admin_btn);
+		
+		JButton kullanici_btn = new JButton("Kullanici");
+		kullanici_btn.setBounds(221, 55, 89, 37);
+		contentPane.add(kullanici_btn);
+		
+		JLabel secin_lbl = new JLabel("Kullanici se\u00E7iniz");
+		secin_lbl.setBounds(148, 0, 104, 39);
+		contentPane.add(secin_lbl);
+		JButton giris_btn = new JButton("Giri\u015F");
+		
+		
+		giris_btn.setVisible(false);
+		txt_sifre.setVisible(false);
+		txt_ad.setVisible(false);
+		sifre_lbl.setVisible(false);
+		ad_lbl.setVisible(false);
+		
+		giris_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ad = txt_ad.getText();
 				sifre = txt_sifre.getText();
-				tur=(String) comboBox.getSelectedItem();
-				
-	
-				String sql_sorgu = "select count(idkull) as giris from kull where kull_ad='"+ad+
-						"' and sifre='"+sifre+"'"+" and kull_uyelik='"+tur+"'";
-				
 			
 				
-				
-		
-				
-				 
+				String sql_sorgu = "select count(idkull) as giris from kull where kul_ad='"+ad+
+						"' and kul_sifre='"+sifre+"'"+" and kull_uyelik='"+tur+"'"; 
 				ResultSet myRs = baglanti.yap();
 				myRs = baglanti.sorgula(sql_sorgu);
 				
 				try {
 					while(myRs.next()){
-						
-						
-					
-						
+				
 						if(myRs.getInt("giris")==1) {
 							if(tur=="admin") {
 								fm1 ekr = new fm1();
@@ -126,7 +135,7 @@ public class giris extends JFrame {
 							
 							
 							
-						} else { btnNewButton.setText("hatalý giriþ"); }
+						} else { giris_btn.setText("hatalý giriþ"); }
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -141,12 +150,44 @@ public class giris extends JFrame {
 				
 			}
 		});
-		btnNewButton.setBounds(143, 149, 97, 25);
-		contentPane.add(btnNewButton);
-		
-		JLabel lblNewLabel_2 = new JLabel("tur");
-		lblNewLabel_2.setBounds(42, 123, 46, 14);
-		contentPane.add(lblNewLabel_2);
+		giris_btn.setBounds(140, 206, 97, 25);
+		contentPane.add(giris_btn);
+	
+		admin_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tur="admin";
+				secin_lbl.setVisible(false);
+				admin_btn.setVisible(false);
+				kullanici_btn.setVisible(false);
+				giris_btn.setVisible(true);
+				txt_sifre.setVisible(true);
+				txt_ad.setVisible(true);
+				sifre_lbl.setVisible(true);
+				ad_lbl.setVisible(true);
+				
+				
+			}
+		});
+		kullanici_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			
+				tur="kullanici";
+					
+				
+				secin_lbl.setVisible(false);
+				admin_btn.setVisible(false);
+				kullanici_btn.setVisible(false);
+				giris_btn.setVisible(true);
+				txt_sifre.setVisible(true);
+				txt_ad.setVisible(true);
+				sifre_lbl.setVisible(true);
+				ad_lbl.setVisible(true);
+				
+				
+				
+			}
+		});
 		
 		
 	}

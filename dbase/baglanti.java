@@ -12,10 +12,10 @@ public class baglanti {
 	try
     {
 	  String myDriver = "com.mysql.jdbc.Driver";
-      String db = "jdbc:mysql://localhost/deneme";
+	  String db = "jdbc:mysql://localhost/prolab";
       Class.forName(myDriver);
       conn = DriverManager.getConnection(db, "root", "1234");
-      String sorgu = "SELECT * FROM sarki";
+     String sorgu = "SELECT * FROM sarki";
       st = conn.createStatement();
      myRs = st.executeQuery(sorgu);
     }
@@ -32,10 +32,11 @@ public class baglanti {
 	try
    {
 	  String myDriver = "com.mysql.jdbc.Driver";
-     String db = "jdbc:mysql://localhost/deneme";
+     String db = "jdbc:mysql://localhost/prolab";
      Class.forName(myDriver);
      conn = DriverManager.getConnection(db, "root", "1234");
-     String sql_sorgu="select *from sarki where sarki_Id in (select sarki_Id from liste where idkull="+kull_id+" and liste_adi='"+secilen1+"')";
+     String sql_sorgu="";
+    		 //"select *from sarki where sarki_Id in (select sarki_Id from liste where idkull="+kull_id+" and liste_adi='"+secilen1+"')";
      System.out.println(sql_sorgu);
      st = conn.createStatement();
     myRs = st.executeQuery(sql_sorgu);
@@ -53,7 +54,7 @@ public class baglanti {
 	try
   {
 	  String myDriver = "com.mysql.jdbc.Driver";
-    String db = "jdbc:mysql://localhost/deneme";
+	  String db = "jdbc:mysql://localhost/prolab";
     Class.forName(myDriver);
     conn = DriverManager.getConnection(db, "root", "1234");
     //String sql_sorgu;
