@@ -29,7 +29,7 @@ public class giris extends JFrame {
 	private JTextField txt_sifre;
 	static String ad;
 	static String sifre;
-	static String tur;
+	static String tur="";
 
 	/**
 	 * Launch the application.
@@ -87,7 +87,7 @@ public class giris extends JFrame {
 		JLabel secin_lbl = new JLabel("Kullanici se\u00E7iniz");
 		secin_lbl.setBounds(148, 0, 104, 39);
 		contentPane.add(secin_lbl);
-		JButton giris_btn = new JButton("Giri\u015F");
+		JButton giris_btn = new JButton("giris");
 		
 		
 		giris_btn.setVisible(false);
@@ -100,37 +100,44 @@ public class giris extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				ad = txt_ad.getText();
 				sifre = txt_sifre.getText();
-			
 				
-				String sql_sorgu = "select count(idkull) as giris from kull where kul_ad='"+ad+
-						"' and kul_sifre='"+sifre+"'"+" and kull_uyelik='"+tur+"'"; 
+				/*String sql_sorgu = "select count(kul_id) as giris from kullanici where kul_ad='"+ad+
+						"' and kul_sifre='"+sifre+"'"; 
+*/
+				String sql_sorgu = "SELECT  count(kul_id) , kul_uyelik FROM kullanici WHERE kul_ad='"+ad+"' and kul_sifre='"+sifre+"'";
+
 				ResultSet myRs = baglanti.yap();
 				myRs = baglanti.sorgula(sql_sorgu);
 				
 				try {
 					while(myRs.next()){
 				
-						if(myRs.getInt("giris")==1) {
-							if(tur=="admin") {
+						if(myRs.getInt("count(kul_id)")==1) {
+							
+								tur=myRs.getString("kul_uyelik");
+								System.out.println(tur);
+							
+							
+							if(myRs.getString("kul_uyelik")=="admin") {
 								fm1 ekr = new fm1();
 								ekr.setVisible(true);
 								setVisible(false);
 								
 							}
-							if(tur=="normal") {
+							else if(tur=="normal") {
 								frm2 ekr = new frm2();
 								ekr.setVisible(true);
 								setVisible(false);
 								
 							}
-							if(tur=="premium") {
+							else if(tur=="premium") {
 								frm3 ekr = new frm3();
 								ekr.setVisible(true);
 								setVisible(false);
 								
 							}
 							
-								
+							
 							
 							
 							
@@ -147,7 +154,6 @@ public class giris extends JFrame {
 				
 				
 				
-				
 			}
 		});
 		giris_btn.setBounds(140, 206, 97, 25);
@@ -155,7 +161,7 @@ public class giris extends JFrame {
 	
 		admin_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tur="admin";
+				//String tur="admin";
 				secin_lbl.setVisible(false);
 				admin_btn.setVisible(false);
 				kullanici_btn.setVisible(false);
@@ -172,7 +178,7 @@ public class giris extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 			
-				tur="kullanici";
+				
 					
 				
 				secin_lbl.setVisible(false);
@@ -192,3 +198,4 @@ public class giris extends JFrame {
 		
 	}
 }
+
