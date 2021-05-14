@@ -73,6 +73,50 @@ public class baglanti {
   }
 	   return myRs;
 	}
+	static ResultSet yap3() {
+		 ResultSet myRs=null;
+	try
+   {
+	  String myDriver = "com.mysql.jdbc.Driver";
+	  String db = "jdbc:mysql://localhost/prolab";
+     Class.forName(myDriver);
+     conn = DriverManager.getConnection(db, "root", "1234");
+     String sorgu = "select album_id,album_ad,sanatci_ad,tarih,tur_ad from tur,album,sanatci "
+    		+ " where album.tur_id=tur.tur_id and album.sanatci_id=sanatci.sanatci_id ORDER BY album_id";
+
+     st = conn.createStatement();
+    myRs = st.executeQuery(sorgu);
+   }
+  
+   catch (Exception a)
+   {
+     System.err.println("Hata ! ");
+     System.err.println(a.getMessage());
+   }
+	   return myRs;
+	}
+	static ResultSet yap4() {
+		 ResultSet myRs=null;
+	try
+  {
+	  String myDriver = "com.mysql.jdbc.Driver";
+	  String db = "jdbc:mysql://localhost/prolab";
+    Class.forName(myDriver);
+    conn = DriverManager.getConnection(db, "root", "1234");
+    String sorgu = "select sanatci_id,sanatci_ad,ulke_ad from sanatci,ulke "
+   		+ " where sanatci.ulke_id=ulke.ulke_id  ORDER BY sanatci_id";
+
+    st = conn.createStatement();
+   myRs = st.executeQuery(sorgu);
+  }
+ 
+  catch (Exception a)
+  {
+    System.err.println("Hata ! ");
+    System.err.println(a.getMessage());
+  }
+	   return myRs;
+	}
 	
 	static void ekle(String sql_sorgu) {
 		try {
@@ -100,6 +144,17 @@ public class baglanti {
 		}
 	}
 	static ResultSet sorgula(String sql_sorgu) {
+		 ResultSet myRs=null;
+		 try {
+			myRs = st.executeQuery(sql_sorgu);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	   return myRs;
+	}
+	static ResultSet sorgula1(String sql_sorgu) {
 		 ResultSet myRs=null;
 		 try {
 			myRs = st.executeQuery(sql_sorgu);
