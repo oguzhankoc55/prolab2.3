@@ -29,7 +29,7 @@ public class fm1 extends JFrame {
 
 	private JPanel contentPane;
 	DefaultTableModel modelim=new DefaultTableModel();
-	Object[] kolonlar= {"No","Ad","Tarih","Album","tur","sure","dinlenme","Sanatci"};
+	Object[] kolonlar= {"Id","Ad","Tarih","Tur","Sure","Dinlenme","Album","Sanatci"};
 	Object[] satirlar= new Object[8];
 	private JTable table;
 	private JTextField txt_id;
@@ -91,15 +91,16 @@ public class fm1 extends JFrame {
 				
 				try {
 					while(myRs.next()) {
-						satirlar[0]=myRs.getString("sarki_Id");
+						satirlar[0]=myRs.getString("sarki_id");
 						satirlar[1]=myRs.getString("sarki_adi");
 						satirlar[2]=myRs.getString("sarki_tarih");
+						satirlar[3]=myRs.getString("tur_ad");
+						satirlar[4]=myRs.getString("sarki_sure");
+						satirlar[5]=myRs.getString("sarki_dinlenme");
+					
+						satirlar[6]=myRs.getString("album_ad");
+						satirlar[7]=myRs.getString("sanatci_ad");
 						
-						satirlar[3]=myRs.getString("sarki_album");
-						satirlar[4]=myRs.getString("sarki_tur");
-						satirlar[5]=myRs.getString("sarki_sure");
-						satirlar[6]=myRs.getString("sarki_dinlenme");
-						satirlar[7]=myRs.getString("sarki_sanatci");
 						modelim.addRow(satirlar);
 					}
 					
@@ -129,7 +130,7 @@ public class fm1 extends JFrame {
 		txt_tarih.setColumns(10);
 		
 		txt_album = new JTextField();
-		txt_album.setBounds(66, 605, 86, 20);
+		txt_album.setBounds(277, 574, 86, 20);
 		contentPane.add(txt_album);
 		txt_album.setColumns(10);
 		
@@ -138,7 +139,12 @@ public class fm1 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				
-				String id,ad,tarih,sanatci,album,tur,sure,dinlenme,sql_sorgu;
+				String id,ad,tarih,sanatci,album,tur,sure,dinlenme,sql_sorgu,sql_tur,sql_album,sql_sanatci;
+				int tur_id ,album_id,sanatci_id;
+				String tur_ids="";
+				String album_ids="";
+				String sanatci_ids="";
+				
 				id=txt_id.getText();
 				ad=txt_ad.getText();
 				tarih=txt_tarih.getText();
@@ -147,8 +153,46 @@ public class fm1 extends JFrame {
 				sure=txt_sure.getText();
 				dinlenme=txt_dinlenme.getText();
 				sanatci=txt_sanatci.getText();
-				sql_sorgu="INSERT INTO sarki (sarki_Id,sarki_adi,sarki_tarih,sarki_album,sarki_tur,sarki_sure,sarki_dinlenme,sarki_sanatci) VALUES("+
-				id +",'"+ad+"',"+"'"+tarih +"','"+album +"','"+tur +"','"+sure +"','"+dinlenme+"','"+sanatci+"')";
+				
+				//select sarki_id,sarki_adi,sarki_tarih,sarki_sure,sarki_dinlenme,tur_ad ,sanatci_ad,album_ad from sarki,tur,album,sanatci  where sarki.tur_id=tur.tur_id and sarki.album_id=album.album_id and sarki.sanatci_id=sanatci.sanatci_id ORDER BY sarki_id;
+				sql_tur="select tur_id from tur where tur_ad='"+tur+"'";
+				ResultSet myRs = baglanti.yap2(sql_tur);
+				myRs = baglanti.sorgula(sql_tur);
+				try {
+					while(myRs.next()){
+						tur_id=myRs.getInt("tur_id");
+						tur_ids = String.valueOf(tur_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				sql_album="select album_id from album where album_ad='"+album+"'";
+				ResultSet myRs1 = baglanti.yap2(sql_album);
+				myRs1 = baglanti.sorgula(sql_album);
+				try {
+					while(myRs1.next()){
+						album_id=myRs1.getInt("album_id");
+						album_ids = String.valueOf(album_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				sql_sanatci="select sanatci_id from sanatci where sanatci_ad='"+sanatci+"'";
+				ResultSet myRs2 = baglanti.yap2(sql_sanatci);
+				myRs2 = baglanti.sorgula(sql_sanatci);
+				try {
+					while(myRs2.next()){
+						sanatci_id=myRs2.getInt("sanatci_id");
+						sanatci_ids = String.valueOf(sanatci_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				
+				sql_sorgu="INSERT INTO sarki (sarki_id,sarki_adi,sarki_tarih,tur_id,sarki_sure,sarki_dinlenme,album_id,sanatci_id) VALUES("+
+				id +",'"+ad+"',"+"'"+tarih  +"','"+tur_ids +"','"+sure +"','"+dinlenme+"','"+album_ids +"','"+sanatci_ids +"')";
+				System.out.println(sql_sorgu);
+				
 				
 				baglanti.ekle(sql_sorgu);
 				
@@ -170,7 +214,7 @@ public class fm1 extends JFrame {
 		contentPane.add(lbl_tarih);
 		
 		JLabel lbl_sanatci = new JLabel("Sanatci");
-		lbl_sanatci.setBounds(198, 608, 46, 14);
+		lbl_sanatci.setBounds(198, 604, 46, 25);
 		contentPane.add(lbl_sanatci);
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Ad", "Id", "Tarih", "Sanatci", "Album", "Tur", "Sure", "Dinlenme"}));
@@ -181,7 +225,11 @@ public class fm1 extends JFrame {
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				String id,ad,tarih,sanatci,album,tur,sure,dinlenme,sql_sorgu;
+				String id,ad,tarih,sanatci,album,tur,sure,dinlenme,sql_sorgu,sql_tur,sql_album,sql_sanatci;
+				int tur_id ,album_id,sanatci_id;
+				String tur_ids="";
+				String album_ids="";
+				String sanatci_ids="";
 				id=txt_id.getText();
 				ad=txt_ad.getText();
 				tarih=txt_tarih.getText();
@@ -191,9 +239,42 @@ public class fm1 extends JFrame {
 				dinlenme=txt_dinlenme.getText();
 				sanatci=txt_sanatci.getText();
 				
-				
-				sql_sorgu="UPDATE sarki SET sarki_Id="+id+","+"sarki_adi='"+ad+"',sarki_tarih='"+tarih+
-						"',sarki_album='"+album+"',sarki_tur='"+tur+"',sarki_sure='"+sure+"',sarki_dinlenme='"+dinlenme+"',sarki_sanatci='"+sanatci+"' WHERE sarki_Id="+id;
+				sql_tur="select tur_id from tur where tur_ad='"+tur+"'";
+				ResultSet myRs = baglanti.yap2(sql_tur);
+				myRs = baglanti.sorgula(sql_tur);
+				try {
+					while(myRs.next()){
+						tur_id=myRs.getInt("tur_id");
+						tur_ids = String.valueOf(tur_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				sql_album="select album_id from album where album_ad='"+album+"'";
+				ResultSet myRs1 = baglanti.yap2(sql_album);
+				myRs1 = baglanti.sorgula(sql_album);
+				try {
+					while(myRs1.next()){
+						album_id=myRs1.getInt("album_id");
+						album_ids = String.valueOf(album_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				sql_sanatci="select sanatci_id from sanatci where sanatci_ad='"+sanatci+"'";
+				ResultSet myRs2 = baglanti.yap2(sql_sanatci);
+				myRs2 = baglanti.sorgula(sql_sanatci);
+				try {
+					while(myRs2.next()){
+						sanatci_id=myRs2.getInt("sanatci_id");
+						sanatci_ids = String.valueOf(sanatci_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				sql_sorgu="UPDATE sarki SET sarki_id="+id+","+"sarki_adi='"+ad+"',sarki_tarih='"+tarih+
+					"',tur_id='"+tur_ids+"',sarki_sure='"+sure+"',sarki_dinlenme='"+dinlenme+"',album_id='"+album_ids+"',sanatci_id='"+sanatci_ids+"' WHERE sarki_Id="+id;
+				System.out.println(sql_sorgu);
 				
 				baglanti.update(sql_sorgu);
 				
@@ -299,33 +380,33 @@ public class fm1 extends JFrame {
 		
 		JLabel lbl_album = new JLabel("Album");
 		lbl_album.setHorizontalAlignment(SwingConstants.TRAILING);
-		lbl_album.setBounds(0, 608, 41, 14);
+		lbl_album.setBounds(185, 576, 41, 17);
 		contentPane.add(lbl_album);
 		
 		JLabel lbl_tur = new JLabel("Tur");
-		lbl_tur.setBounds(198, 512, 46, 14);
+		lbl_tur.setBounds(10, 609, 46, 20);
 		contentPane.add(lbl_tur);
 		
 		JLabel lbl_sure = new JLabel("Sure");
-		lbl_sure.setBounds(198, 546, 46, 14);
+		lbl_sure.setBounds(198, 512, 46, 14);
 		contentPane.add(lbl_sure);
 		
 		JLabel lbl_dinlenme = new JLabel("Dinlenme");
-		lbl_dinlenme.setBounds(194, 577, 46, 14);
+		lbl_dinlenme.setBounds(198, 546, 46, 14);
 		contentPane.add(lbl_dinlenme);
 		
 		txt_tur = new JTextField();
-		txt_tur.setBounds(277, 512, 86, 20);
+		txt_tur.setBounds(66, 605, 86, 20);
 		contentPane.add(txt_tur);
 		txt_tur.setColumns(10);
 		
 		txt_sure = new JTextField();
-		txt_sure.setBounds(277, 543, 86, 20);
+		txt_sure.setBounds(277, 512, 86, 20);
 		contentPane.add(txt_sure);
 		txt_sure.setColumns(10);
 		
 		txt_dinlenme = new JTextField();
-		txt_dinlenme.setBounds(277, 574, 86, 20);
+		txt_dinlenme.setBounds(277, 543, 86, 20);
 		contentPane.add(txt_dinlenme);
 		txt_dinlenme.setColumns(10);
 		
@@ -340,10 +421,10 @@ public class fm1 extends JFrame {
 				txt_id.setText(modelim.getValueAt(table.getSelectedRow(),0).toString());
 				txt_ad.setText((String)modelim.getValueAt(table.getSelectedRow(),1));
 				txt_tarih.setText((String)modelim.getValueAt(table.getSelectedRow(),2));
-				txt_album.setText((String)modelim.getValueAt(table.getSelectedRow(),3));
-				txt_tur.setText((String)modelim.getValueAt(table.getSelectedRow(),4));
-				txt_sure.setText((String)modelim.getValueAt(table.getSelectedRow(),5));
-				txt_dinlenme.setText((String)modelim.getValueAt(table.getSelectedRow(),6));
+				txt_tur.setText((String)modelim.getValueAt(table.getSelectedRow(),3));
+				txt_sure.setText((String)modelim.getValueAt(table.getSelectedRow(),4));
+				txt_dinlenme.setText((String)modelim.getValueAt(table.getSelectedRow(),5));
+				txt_album.setText((String)modelim.getValueAt(table.getSelectedRow(),6));
 				txt_sanatci.setText((String)modelim.getValueAt(table.getSelectedRow(),7));
 				
 			}

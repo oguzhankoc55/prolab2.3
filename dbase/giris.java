@@ -136,9 +136,7 @@ public class giris extends JFrame {
 				ad = txt_ad.getText();
 				sifre = txt_sifre.getText();
 				
-				/*String sql_sorgu = "select count(kul_id) as giris from kullanici where kul_ad='"+ad+
-						"' and kul_sifre='"+sifre+"'"; 
-*/
+
 				String sql_sorgu = "SELECT  count(kul_id) , kul_uyelik_id FROM kullanici WHERE kul_ad='"+ad+"' and kul_sifre='"+sifre+"'";
 
 				ResultSet myRs = baglanti.yap();
@@ -151,7 +149,7 @@ public class giris extends JFrame {
 						if(myRs.getInt("count(kul_id)")==1) {
 								 
 							tur=myRs.getInt("kul_uyelik_id");
-								//System.out.println(tur);
+								
 							
 							if(sayac>0) {
 								if(tur==3) {
