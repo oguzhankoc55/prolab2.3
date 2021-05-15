@@ -52,6 +52,8 @@ public class fm2 extends JFrame {
 	private JTable table_1;
 	private JTable table_2;
 	static int sayac1=0,sayac2=0,sayac3=0;
+	String kullanici_id = "";
+	String kullanici_ad = "";
 
 	/**
 	 * Launch the application.
@@ -384,8 +386,7 @@ public class fm2 extends JFrame {
 						satirlar[2]=myRs.getString("sarki_tarih");
 						satirlar[3]=myRs.getString("tur_ad");
 						satirlar[4]=myRs.getString("sarki_sure");
-						satirlar[5]=myRs.getString("sarki_dinlenme");
-					
+						satirlar[5]=myRs.getString("sarki_dinlenme");	
 						satirlar[6]=myRs.getString("album_ad");
 						satirlar[7]=myRs.getString("sanatci_ad");
 						
@@ -408,11 +409,11 @@ public class fm2 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				String sorgu = "select kul_id from kullanici where kul_ad ='"+giris.ad+"'";
-				String id="";
+				kullanici_ad=giris.ad;
 				ResultSet myRs=baglanti.yap2(sorgu);
 				try {
 					while(myRs.next()) {
-						id = myRs.getString("kul_id");
+						kullanici_id = myRs.getString("kul_id");
 					}
 					
 				} catch (Exception e2) {
@@ -426,7 +427,7 @@ public class fm2 extends JFrame {
 				sayac3=1;
 				modelim2.setColumnIdentifiers(kolonlar2);
 				modelim2.setRowCount(0);
-				ResultSet myRs1=baglanti.sorgulama_2(id);
+				ResultSet myRs1=baglanti.sorgulama_2(kullanici_id);
 				
 				try {
 					while(myRs1.next()) {
@@ -448,6 +449,30 @@ public class fm2 extends JFrame {
 		});
 		btn_benim_listem.setBounds(690, 480, 85, 21);
 		contentPane.add(btn_benim_listem);
+		
+		JButton btn_ekle = new JButton("ekle");
+		btn_ekle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+
+				
+			
+				
+	
+				
+				String sql_sorgu="INSERT INTO liste_islem (liste_id,sarki_id) VALUES("+
+				metin +",'"+sarki_id+"')";
+				System.out.println(sql_sorgu);
+				
+				
+				baglanti.ekle(sql_sorgu);
+				
+				
+				
+			}
+		});
+		btn_ekle.setBounds(793, 480, 85, 21);
+		contentPane.add(btn_ekle);
 		
 		table.addMouseListener(new MouseAdapter() {
 			@Override

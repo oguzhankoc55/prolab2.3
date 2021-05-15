@@ -139,7 +139,7 @@ public class giris extends JFrame {
 
 				String sql_sorgu = "SELECT  count(kul_id) , kul_uyelik_id FROM kullanici WHERE kul_ad='"+ad+"' and kul_sifre='"+sifre+"'";
 
-				ResultSet myRs = baglanti.yap();
+				ResultSet myRs = baglanti.yap(0);
 				myRs = baglanti.sorgula(sql_sorgu);
 				
 				try {

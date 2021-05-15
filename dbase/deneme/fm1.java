@@ -106,7 +106,7 @@ public class fm1 extends JFrame {
 				sayac3=0;
 				modelim.setColumnIdentifiers(kolonlar);
 				modelim.setRowCount(0);
-				ResultSet myRs=baglanti.yap();
+				ResultSet myRs=baglanti.yap(0);
 				
 				try {
 					while(myRs.next()) {
@@ -364,7 +364,7 @@ public class fm1 extends JFrame {
 				sayac3=0;
 				modelim1.setColumnIdentifiers(kolonlar1);
 				modelim1.setRowCount(0);
-				ResultSet myRs=baglanti.yap3();
+				ResultSet myRs=baglanti.yap(1);
 				
 				try {
 					while(myRs.next()) {
@@ -405,7 +405,7 @@ public class fm1 extends JFrame {
 				sayac3=1;
 				modelim2.setColumnIdentifiers(kolonlar2);
 				modelim2.setRowCount(0);
-				ResultSet myRs=baglanti.yap4();
+				ResultSet myRs=baglanti.yap(2);
 				
 				try {
 					while(myRs.next()) {

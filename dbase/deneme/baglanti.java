@@ -18,6 +18,7 @@ public class baglanti {
 		String s=	"select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sarki,liste_islem,tur,sanatci,album where liste_islem.liste_id = '"
 					+ metin+ "' and sarki.sarki_id = liste_islem.sarki_id and sarki.tur_id=tur.tur_id and album.album_id=sarki.album_id and sanatci.sanatci_id=sarki.sanatci_id ORDER BY sarki_id";
 		ResultSet myRs = yap3(s);
+		System.out.println(s);
 		return myRs;
 	};
 	
