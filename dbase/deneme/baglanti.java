@@ -1,4 +1,4 @@
-package deneme;
+package dbase;
 
 import java.sql.*;
 
