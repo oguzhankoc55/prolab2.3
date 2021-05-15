@@ -39,6 +39,7 @@ public class fm2 extends JFrame {
 	DefaultTableModel modelim2=new DefaultTableModel();
 	Object[] kolonlar2= {"Id","Kullanici Ad","Tur"};
 	Object[] satirlar2= new Object[3];
+	
 	private JTable table;
 	private JTextField txt_id;
 	private JTextField txt_ad;
@@ -100,7 +101,7 @@ public class fm2 extends JFrame {
 				sayac3=0;
 				modelim.setColumnIdentifiers(kolonlar);
 				modelim.setRowCount(0);
-				ResultSet myRs=baglanti.yap();
+				ResultSet myRs=baglanti.yap(0);
 				
 				try {
 					while(myRs.next()) {
@@ -291,7 +292,7 @@ public class fm2 extends JFrame {
 				sayac3=0;
 				modelim1.setColumnIdentifiers(kolonlar1);
 				modelim1.setRowCount(0);
-				ResultSet myRs=baglanti.yap3();
+				ResultSet myRs=baglanti.yap(1);
 				
 				try {
 					while(myRs.next()) {
@@ -341,7 +342,7 @@ public class fm2 extends JFrame {
 				sayac3=1;
 				modelim2.setColumnIdentifiers(kolonlar2);
 				modelim2.setRowCount(0);
-				ResultSet myRs=baglanti.yap5();
+				ResultSet myRs=baglanti.yap(3);
 				
 				try {
 					while(myRs.next()) {
@@ -364,6 +365,89 @@ public class fm2 extends JFrame {
 		});
 		btnNewButton.setBounds(424, 8, 176, 79);
 		contentPane.add(btnNewButton);
+		
+		JButton btn_gecis = new JButton("gecis");
+		btn_gecis.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				sayac1=1;	
+				sayac2=0;
+				sayac3=0;
+				modelim.setColumnIdentifiers(kolonlar);
+				modelim.setRowCount(0);
+				ResultSet myRs=baglanti.sorgulama_1(metin);
+				
+				try {
+					while(myRs.next()) {
+						satirlar[0]=myRs.getString("sarki_id");
+						satirlar[1]=myRs.getString("sarki_adi");
+						satirlar[2]=myRs.getString("sarki_tarih");
+						satirlar[3]=myRs.getString("tur_ad");
+						satirlar[4]=myRs.getString("sarki_sure");
+						satirlar[5]=myRs.getString("sarki_dinlenme");
+					
+						satirlar[6]=myRs.getString("album_ad");
+						satirlar[7]=myRs.getString("sanatci_ad");
+						
+						modelim.addRow(satirlar);
+					}
+					
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim);
+				
+			}
+		});
+		btn_gecis.setBounds(691, 424, 85, 21);
+		contentPane.add(btn_gecis);
+		
+		JButton btn_benim_listem = new JButton("benim listem");
+		btn_benim_listem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String sorgu = "select kul_id from kullanici where kul_ad ='"+giris.ad+"'";
+				String id="";
+				ResultSet myRs=baglanti.yap2(sorgu);
+				try {
+					while(myRs.next()) {
+						id = myRs.getString("kul_id");
+					}
+					
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				
+				
+				sayac1=0;	
+				sayac2=0;
+				sayac3=1;
+				modelim2.setColumnIdentifiers(kolonlar2);
+				modelim2.setRowCount(0);
+				ResultSet myRs1=baglanti.sorgulama_2(id);
+				
+				try {
+					while(myRs1.next()) {
+						
+						satirlar2[0]=myRs1.getString("liste_id");
+						satirlar2[1]=myRs1.getString("kul_ad");
+						satirlar2[2]=myRs1.getString("tur_ad");
+						
+						modelim2.addRow(satirlar2);
+					}
+					
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim2);
+				
+			}
+		});
+		btn_benim_listem.setBounds(690, 480, 85, 21);
+		contentPane.add(btn_benim_listem);
 		
 		table.addMouseListener(new MouseAdapter() {
 			@Override
