@@ -139,7 +139,7 @@ public class giris extends JFrame {
 
 				String sql_sorgu = "SELECT  count(kul_id) , kul_uyelik_id FROM kullanici WHERE kul_ad='"+ad+"' and kul_sifre='"+sifre+"'";
 
-				ResultSet myRs = baglanti.yap();
+				ResultSet myRs = baglanti.yap(0);
 				myRs = baglanti.sorgula(sql_sorgu);
 				
 				try {
@@ -162,13 +162,13 @@ public class giris extends JFrame {
 							}
 							
 							else if(tur==1) {
-								frm2 ekr = new frm2();
+								fm2 ekr = new fm2();
 								ekr.setVisible(true);
 								setVisible(false);
 								
 							}
 							else if(tur==2) {
-								frm3 ekr = new frm3();
+								fm3 ekr = new fm3();
 								ekr.setVisible(true);
 								setVisible(false);
 								
