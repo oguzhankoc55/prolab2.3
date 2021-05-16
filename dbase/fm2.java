@@ -29,6 +29,8 @@ public class fm2 extends JFrame {
 
 	
 	String metin="";
+	String metin1="";
+	String metin2="";
 	String sarki_id="";
 	private JPanel contentPane;
 	DefaultTableModel modelim=new DefaultTableModel();
@@ -40,6 +42,12 @@ public class fm2 extends JFrame {
 	DefaultTableModel modelim2=new DefaultTableModel();
 	Object[] kolonlar2= {"Id","Kullanici Ad","Tur"};
 	Object[] satirlar2= new Object[3];
+	DefaultTableModel modelim3=new DefaultTableModel();
+	Object[] kolonlar3= {"Id","Kullanici Ad"};
+	Object[] satirlar3= new Object[2];
+	DefaultTableModel modelim4=new DefaultTableModel();
+	Object[] kolonlar4= {"Id","Kullanici Ad"};
+	Object[] satirlar4= new Object[2];
 	
 	private JTable table;
 	private JTextField txt_id;
@@ -52,7 +60,7 @@ public class fm2 extends JFrame {
 	private JTextField txt_sanatci;
 	private JTable table_1;
 	private JTable table_2;
-	static int sayac1=0,sayac2=0,sayac3=0;
+	static int sayac1=0,sayac2=0,sayac3=0,sayac4=0,sayac5=0;
 	String kullanici_id = "";
 	String kullanici_ad = "";
 
@@ -102,6 +110,8 @@ public class fm2 extends JFrame {
 				sayac1=1;	
 				sayac2=0;
 				sayac3=0;
+				sayac4=0;
+				sayac5=0;
 				modelim.setColumnIdentifiers(kolonlar);
 				modelim.setRowCount(0);
 				ResultSet myRs=baglanti.yap(0);
@@ -215,7 +225,7 @@ public class fm2 extends JFrame {
 				baglanti.sil(sql_sorgu_sil);
 			}
 		});
-		btn_kaldir.setBounds(687, 361, 89, 23);
+		btn_kaldir.setBounds(644, 323, 89, 23);
 		contentPane.add(btn_kaldir);
 		
 		JLabel lblNewLabel = new JLabel("Alan:");
@@ -269,6 +279,8 @@ public class fm2 extends JFrame {
 				sayac1=0;	
 				sayac2=1;
 				sayac3=0;
+				sayac4=0;
+				sayac5=0;
 				modelim1.setColumnIdentifiers(kolonlar1);
 				modelim1.setRowCount(0);
 				ResultSet myRs=baglanti.yap(1);
@@ -312,37 +324,39 @@ public class fm2 extends JFrame {
 		lblNewLabel_1.setBounds(644, 33, 127, 14);
 		contentPane.add(lblNewLabel_1);
 		
-		JButton btnNewButton = new JButton("calma listesi");
+		JButton btnNewButton = new JButton("Premium Kullan\u0131c\u0131lar");
 		btnNewButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
 				sayac1=0;	
 				sayac2=0;
-				sayac3=1;
-				modelim2.setColumnIdentifiers(kolonlar2);
-				modelim2.setRowCount(0);
+				sayac3=0;
+				sayac4=0;
+				sayac5=1;
+				modelim4.setColumnIdentifiers(kolonlar4);
+				modelim4.setRowCount(0);
 				ResultSet myRs=baglanti.yap(3);
 				
 				try {
 					while(myRs.next()) {
 						
-						satirlar2[0]=myRs.getString("liste_id");
-						satirlar2[1]=myRs.getString("kul_ad");
-						satirlar2[2]=myRs.getString("tur_ad");
+						satirlar4[0]=myRs.getString("kul_id");
+						satirlar4[1]=myRs.getString("kul_ad");
 						
-						modelim2.addRow(satirlar2);
+						
+						modelim4.addRow(satirlar4);
 					}
 					
 				} catch (Exception e2) {
 					// TODO: handle exception
 					e2.printStackTrace();
 				}
-				table.setModel(modelim2);
+				table.setModel(modelim4);
 			//	System.out.println(metin);
 				
 			}
 		});
-		btnNewButton.setBounds(424, 8, 176, 79);
+		btnNewButton.setBounds(620, 591, 176, 79);
 		contentPane.add(btnNewButton);
 		
 		JButton btn_gecis = new JButton("gecis");
@@ -352,6 +366,8 @@ public class fm2 extends JFrame {
 				sayac1=1;	
 				sayac2=0;
 				sayac3=0;
+				sayac4=0;
+				sayac5=0;
 				modelim.setColumnIdentifiers(kolonlar);
 				modelim.setRowCount(0);
 				ResultSet myRs=baglanti.sorgulama_1(metin);
@@ -378,7 +394,7 @@ public class fm2 extends JFrame {
 				
 			}
 		});
-		btn_gecis.setBounds(691, 424, 85, 21);
+		btn_gecis.setBounds(644, 357, 85, 21);
 		contentPane.add(btn_gecis);
 		
 		JButton btn_benim_listem = new JButton("benim listem");
@@ -398,10 +414,11 @@ public class fm2 extends JFrame {
 					e2.printStackTrace();
 				}
 				
-				
 				sayac1=0;	
 				sayac2=0;
 				sayac3=1;
+				sayac4=0;
+				sayac5=0;
 				modelim2.setColumnIdentifiers(kolonlar2);
 				modelim2.setRowCount(0);
 				ResultSet myRs1=baglanti.sorgulama_2(kullanici_id);
@@ -424,7 +441,7 @@ public class fm2 extends JFrame {
 				
 			}
 		});
-		btn_benim_listem.setBounds(690, 480, 85, 21);
+		btn_benim_listem.setBounds(417, 8, 205, 90);
 		contentPane.add(btn_benim_listem);
 		
 		JButton btn_ekle = new JButton("ekle");
@@ -479,8 +496,159 @@ public class fm2 extends JFrame {
 				
 			}
 		});
-		btn_ekle.setBounds(691, 314, 85, 21);
+		btn_ekle.setBounds(643, 291, 85, 21);
 		contentPane.add(btn_ekle);
+		
+		JButton btnNewButton_1 = new JButton("Takip Et");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sayac1=0;	
+				sayac2=0;
+				sayac3=0;
+				sayac4=1;
+				sayac5=0;
+				String sorgu_kullanici = "select kul_id from kullanici where kul_ad ='"+giris.ad+"'";
+				kullanici_ad=giris.ad;
+				ResultSet myRs2=baglanti.yap2(sorgu_kullanici);
+				try {
+					while(myRs2.next()) {
+						kullanici_id = myRs2.getString("kul_id");
+					}
+					
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+
+				String sql_sorgu="INSERT INTO takip (takip_eden_id,takip_edilen_id) VALUES("+
+				kullanici_id +",'"+metin1+"')";
+				System.out.println(sql_sorgu);
+				
+				
+				baglanti.ekle(sql_sorgu);
+
+			}
+			
+		});
+		btnNewButton_1.setBounds(644, 413, 89, 23);
+		contentPane.add(btnNewButton_1);
+		
+		JButton btnNewButton_2 = new JButton("Takip Ettiklerim");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sayac1=0;	
+				sayac2=0;
+				sayac3=0;
+				sayac4=1;
+				sayac5=0;
+				modelim3.setColumnIdentifiers(kolonlar3);
+				modelim3.setRowCount(0);
+				String sorgu_kullanici = "select kul_id from kullanici where kul_ad ='"+giris.ad+"'";
+				kullanici_ad=giris.ad;
+				ResultSet myRs2=baglanti.yap2(sorgu_kullanici);
+				try {
+					while(myRs2.next()) {
+						kullanici_id = myRs2.getString("kul_id");
+					}
+					
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				ResultSet myRs=baglanti.sorgulama_4(kullanici_id);
+				
+				try {
+					while(myRs.next()) {
+						
+						satirlar3[0]=myRs.getString("kul_id");
+						satirlar3[1]=myRs.getString("kul_ad");
+						
+						modelim3.addRow(satirlar3);
+					}
+					
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim3);
+				
+				
+				
+			}
+		});
+		btnNewButton_2.setBounds(620, 502, 176, 90);
+		contentPane.add(btnNewButton_2);
+		
+		JButton btnNewButton_3 = new JButton("Takipten \u00C7\u0131kar");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				sayac1=0;	
+				sayac2=0;
+				sayac3=0;
+				sayac4=1;
+				sayac5=0;
+				String sorgu_kullanici = "select kul_id from kullanici where kul_ad ='"+giris.ad+"'";
+				kullanici_ad=giris.ad;
+				ResultSet myRs2=baglanti.yap2(sorgu_kullanici);
+				try {
+					while(myRs2.next()) {
+						kullanici_id = myRs2.getString("kul_id");
+					}
+					
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				
+
+				String sql_sorgu="DELETE FROM takip WHERE takip.takip_eden_id='"+kullanici_id +"' and takip.takip_edilen_id='"+metin2+"'";
+				System.out.println(sql_sorgu);
+				
+				
+				baglanti.sil(sql_sorgu);
+				
+				
+			}
+		});
+		btnNewButton_3.setBounds(644, 447, 127, 23);
+		contentPane.add(btnNewButton_3);
+		
+		JButton btnNewButton_4 = new JButton("TakipL. Gecis");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				sayac1=0;	
+				sayac2=0;
+				sayac3=1;
+				modelim2.setColumnIdentifiers(kolonlar2);
+				modelim2.setRowCount(0);
+				ResultSet myRs=baglanti.sorgulama_5(metin2);
+				
+				try {
+					while(myRs.next()) {
+						
+						satirlar2[0]=myRs.getString("liste_id");
+						satirlar2[1]=myRs.getString("kul_ad");
+						satirlar2[2]=myRs.getString("tur_ad");
+						
+						modelim2.addRow(satirlar2);
+					}
+					
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim2);
+			//	System.out.println(metin);
+				
+				
+				
+				
+			}
+		});
+		btnNewButton_4.setBounds(758, 353, 120, 52);
+		contentPane.add(btnNewButton_4);
 		
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -496,14 +664,22 @@ public class fm2 extends JFrame {
 				txt_dinlenme.setText((String)modelim.getValueAt(table.getSelectedRow(),5));
 				txt_album.setText((String)modelim.getValueAt(table.getSelectedRow(),6));
 				txt_sanatci.setText((String)modelim.getValueAt(table.getSelectedRow(),7));
-				//txt_id.setText(modelim2.getValueAt(table.getSelectedRow(),0).toString());
+				
 				sarki_id = modelim.getValueAt(table.getSelectedRow(),0).toString();
-				//System.out.println(sarki_id);
+			
 			}
 			if(sayac3==1) {
-				metin = modelim2.getValueAt(table.getSelectedRow(),0).toString();
-				txt_id.setText(modelim2.getValueAt(table.getSelectedRow(),0).toString());
-				System.out.println(metin);
+				//metin1=modelim3.getValueAt(table.getSelectedRow(),0).toString();
+				metin = modelim2.getValueAt(table.getSelectedRow(),0).toString();//Kullanici_id
+				
+			}
+			if(sayac4==1) {
+				metin2=modelim3.getValueAt(table.getSelectedRow(),0).toString();//Takipten çýkramak premium kullanýcý_id alýnýr//takip eeiklerimden
+				
+			}
+			if(sayac5==1) {
+				metin1=modelim4.getValueAt(table.getSelectedRow(),0).toString();//Takip edilen premium kullanýcý_id alýnýr//premium kullanicilardan
+				
 			}
 				
 			}

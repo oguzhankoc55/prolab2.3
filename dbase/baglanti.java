@@ -10,8 +10,8 @@ public class baglanti {
 			"select sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sarki,tur,album,sanatci  where sarki.tur_id=tur.tur_id and sarki.album_id=album.album_id and sarki.sanatci_id=sanatci.sanatci_id ORDER BY sarki_id",
 			"select album_id,album_ad,sanatci_ad,tarih,tur_ad from tur,album,sanatci  where album.tur_id=tur.tur_id and album.sanatci_id=sanatci.sanatci_id ORDER BY album_id",
 			"select sanatci_id,sanatci_ad,ulke_ad from sanatci,ulke  where sanatci.ulke_id=ulke.ulke_id  ORDER BY sanatci_id",
-			"select liste_id,kul_ad,tur_ad from liste,kullanici,tur  where liste.kullanici_id=kullanici.kul_id and liste.tur_id = tur.tur_id and kullanici.kul_uyelik_id=2 ORDER BY liste_id"
-
+			"select kul_id,kul_ad from kullanici  where kullanici.kul_uyelik_id=2 ORDER BY kul_id",
+			""
 	};
 	
 	static ResultSet sorgulama_1(String metin) {
@@ -36,7 +36,26 @@ public class baglanti {
 		ResultSet myRs = yap3(s);
 		return myRs;
 	};
+	static ResultSet sorgulama_4(String sorgu) {
+		
+		//select kul_id,kullanici.kul_ad from takip,kullanici where takip.takip_eden_id=1 and takip.takip_edilen_id=kullanici.kul_id;
+		String s =	"select kul_id,kul_ad from kullanici where kul_id IN (select takip_edilen_id from takip where takip_eden_id='"+sorgu+"')";
 
+				System.out.println(s);
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+	static ResultSet sorgulama_5(String sorgu) {
+		
+		//select kul_id,kullanici.kul_ad from takip,kullanici where takip.takip_eden_id=1 and takip.takip_edilen_id=kullanici.kul_id//
+		//where liste.kullanici_id= '"+metin+"' and kullanici.kul_id= '"+metin+"'  and liste.tur_id = tur.tur_id  ORDER BY liste_id";;
+		String s =	"select liste_id,kul_ad,tur_ad from liste,kullanici,tur where liste.kullanici_id='"+sorgu+"' and liste.kullanici_id=kullanici.kul_id and liste.tur_id=tur.tur_id";
+			
+
+				System.out.println(s);
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
 	static ResultSet yap(int sira) {
 		ResultSet myRs = null;
 		try {
