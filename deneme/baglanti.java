@@ -43,7 +43,6 @@ public class baglanti {
 	};
 	static ResultSet sorgulama_4(String sorgu) {
 		
-		//select kul_id,kullanici.kul_ad from takip,kullanici where takip.takip_eden_id=1 and takip.takip_edilen_id=kullanici.kul_id;
 		String s =	"select kul_id,kul_ad from kullanici where kul_id IN (select takip_edilen_id from takip where takip_eden_id='"+sorgu+"')";
 
 				System.out.println(s);
@@ -51,14 +50,18 @@ public class baglanti {
 		return myRs;
 	};
 	static ResultSet sorgulama_5(String sorgu) {
-		
-		//select kul_id,kullanici.kul_ad from takip,kullanici where takip.takip_eden_id=1 and takip.takip_edilen_id=kullanici.kul_id//
-		//where liste.kullanici_id= '"+metin+"' and kullanici.kul_id= '"+metin+"'  and liste.tur_id = tur.tur_id  ORDER BY liste_id";;
+
 		String s =	"select liste_id,kul_ad,tur_ad from liste,kullanici,tur where liste.kullanici_id='"+sorgu+"' and liste.kullanici_id=kullanici.kul_id and liste.tur_id=tur.tur_id";
 			
 
 				System.out.println(s);
 		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+	static ResultSet sorgulama_6(String metin) {
+		String s="select sarki_dinlenme from sarki where sarki_id ='"+ metin+ "' ";
+		ResultSet myRs = yap3(s);
+		System.out.println(s);
 		return myRs;
 	};
 	
@@ -69,12 +72,7 @@ public class baglanti {
 		return myRs;
 	};
 	
-	static ResultSet sorgulama_6(String metin) {
-		String s="select sarki_dinlenme from sarki where sarki_id ='"+ metin+ "' ";
-		ResultSet myRs = yap3(s);
-		System.out.println(s);
-		return myRs;
-	};
+
 	
 static ResultSet sorgulama_8(String sorgu) {
 		
@@ -88,6 +86,21 @@ static ResultSet sorgulama_8(String sorgu) {
 
 	static ResultSet sorgulama_9(String metin) {
 		String s="select kul_id,odenme from odenme where kul_id = '"+metin+"'";
+		ResultSet myRs = yap3(s);
+		System.out.println(s);
+		return myRs;
+	};
+	
+	
+	
+	static ResultSet sorgulama_10(String metin) {
+		String s="select sarki_id from liste_islem where liste_id='"+metin+"'";
+		ResultSet myRs = yap3(s);
+		System.out.println(s);
+		return myRs;
+	};
+	static ResultSet sorgulama_11(String metin) {
+		String s="select tur_id from liste where liste_id='"+metin+"'";
 		ResultSet myRs = yap3(s);
 		System.out.println(s);
 		return myRs;

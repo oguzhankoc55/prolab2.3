@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -784,66 +785,52 @@ public class fm3 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				fonksiyon();
-
-				sayac = 1;
-
-				modelim.setColumnIdentifiers(kolonlar);
-				modelim.setRowCount(0);
-				ResultSet myRs = baglanti.sorgulama_1(metin);
-
-				
+				ArrayList<String> sarkilar = new ArrayList<>();
+				String tur_id="";
+				ResultSet myRs2 = baglanti.sorgulama_11(metin);
 				try {
-					while (myRs.next()) {
+					while (myRs2.next()) {
 						
+						tur_id=myRs2.getString("tur_id");
 
-						sarki_id = myRs.getString("sarki_id");
-						
-						
-						String sql_sorgu_tur = "select tur_id from sarki where sarki_id='" + sarki_id + "'";
-						String tur_id = "";
-						ResultSet myRs2 = baglanti.yap2(sql_sorgu_tur);
-						try {
-							while (myRs2.next()) {
 
-								tur_id = myRs2.getString("tur_id");
-							}
-						} catch (Exception e2) {
-							// TODO: handle exception
-						}
-						String liste_id = "";
-						ResultSet myRs1 = baglanti.sorgulama_3(kullanici_id, tur_id);
-
-						try {
-							while (myRs1.next()) {
-								liste_id = myRs1.getString("liste_id");
-
-							}
-						} catch (Exception e2) {
-							// TODO: handle exception
-						}
-
-						String sql_sorgu = "INSERT INTO liste_islem (liste_id,sarki_id) VALUES(" + liste_id + ",'" + sarki_id
-								+ "')";
-						System.out.println(sql_sorgu);
-
-						baglanti.ekle(sql_sorgu);
-						
-						
-						
 					}
 
 				} catch (Exception e2) {
 					// TODO: handle exception
 					e2.printStackTrace();
 				}
+				ResultSet myRs = baglanti.sorgulama_10(metin);
+				try {
+					while (myRs.next()) {
+						
+						sarkilar.add(myRs.getString("sarki_id"));
+
+
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				String liste_id = "";
+				ResultSet myRs1 = baglanti.sorgulama_3(kullanici_id, tur_id);
+
+				try {
+					while (myRs1.next()) {
+						liste_id = myRs1.getString("liste_id");
+
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				for(int i=0;i<sarkilar.size();i++)
+				{
+				String sql_sorgu = "INSERT INTO liste_islem (liste_id,sarki_id) VALUES(" + liste_id + ",'" + sarkilar.get(i)+ "')";
+				baglanti.ekle(sql_sorgu);
 				
-				
-				
-				
-				
-	
-				
-				
+				}
 				
 				
 			}
