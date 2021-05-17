@@ -1,6 +1,5 @@
 package deneme;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -14,12 +13,6 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JRadioButton;
-import javax.swing.JCheckBox;
-import javax.swing.JToggleButton;
-import javax.swing.JSeparator;
 
 public class giris extends JFrame {
 
@@ -140,7 +133,7 @@ public class giris extends JFrame {
 					while (myRs.next()) {
 
 						if (myRs.getInt("count(kul_id)") == 1) {
-							
+
 							tur = myRs.getInt("kul_uyelik_id");
 
 							if (sayac > 0) {

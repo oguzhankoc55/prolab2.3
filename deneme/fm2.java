@@ -10,13 +10,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Font;
-import javax.swing.SwingConstants;
 
 public class fm2 extends JFrame {
 
@@ -51,7 +50,6 @@ public class fm2 extends JFrame {
 	String kullanici_id = "";
 	String kullanici_ad = "";
 
-	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -65,7 +63,6 @@ public class fm2 extends JFrame {
 		});
 	}
 
-	
 	public fm2() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1361, 720);
@@ -443,13 +440,13 @@ public class fm2 extends JFrame {
 		});
 		btnNewButton_4.setBounds(1124, 428, 150, 50);
 		contentPane.add(btnNewButton_4);
-		
+
 		JButton btn_dinle = new JButton("dinle");
 		btn_dinle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				int dinlenme =0;
-				ResultSet myRs = baglanti.sorgulama_6(sarki_id);	
+
+				int dinlenme = 0;
+				ResultSet myRs = baglanti.sorgulama_6(sarki_id);
 				try {
 					while (myRs.next()) {
 
@@ -461,26 +458,23 @@ public class fm2 extends JFrame {
 					// TODO: handle exception
 					e2.printStackTrace();
 				}
-				dinlenme+=1;
+				dinlenme += 1;
 				String dinl = Integer.toString(dinlenme);
-				String sql_sorgu="UPDATE sarki SET sarki_dinlenme='"+dinl+"' WHERE sarki_id='"+sarki_id+"'";
-				
-				//	System.out.println(sql_sorgu);
-					
-					baglanti.update(sql_sorgu);
-					
-				
-				
-				
+				String sql_sorgu = "UPDATE sarki SET sarki_dinlenme='" + dinl + "' WHERE sarki_id='" + sarki_id + "'";
+
+				// System.out.println(sql_sorgu);
+
+				baglanti.update(sql_sorgu);
+
 			}
 		});
 		btn_dinle.setBounds(1124, 368, 150, 50);
 		contentPane.add(btn_dinle);
-		
+
 		JButton btn_ulke = new JButton("ulkeler");
 		btn_ulke.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				sayac = 6;
 				modelim5.setColumnIdentifiers(kolonlar5);
 				modelim5.setRowCount(0);
@@ -491,7 +485,6 @@ public class fm2 extends JFrame {
 
 						satirlar5[0] = myRs.getString("ulke_id");
 						satirlar5[1] = myRs.getString("ulke_ad");
-					
 
 						modelim5.addRow(satirlar5);
 					}
@@ -505,12 +498,12 @@ public class fm2 extends JFrame {
 		});
 		btn_ulke.setBounds(22, 368, 150, 50);
 		contentPane.add(btn_ulke);
-		
+
 		JButton btn_ulke_sarki = new JButton("ulke-sarki");
 		btn_ulke_sarki.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//sayac = 6;
+
+				// sayac = 6;
 				modelim.setColumnIdentifiers(kolonlar);
 				modelim.setRowCount(0);
 				ResultSet myRs = baglanti.sorgulama_7(ulke_id);
@@ -535,18 +528,16 @@ public class fm2 extends JFrame {
 					e2.printStackTrace();
 				}
 				table.setModel(modelim);
-				
-				
+
 			}
 		});
 		btn_ulke_sarki.setBounds(22, 308, 150, 50);
 		contentPane.add(btn_ulke_sarki);
-		
+
 		JButton btn_ecd10s = new JButton("ECD10S");
 		btn_ecd10s.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
+
 				modelim.setColumnIdentifiers(kolonlar);
 				modelim.setRowCount(0);
 				ResultSet myRs = baglanti.yap(5);
@@ -570,19 +561,17 @@ public class fm2 extends JFrame {
 					// TODO: handle exception
 					e2.printStackTrace();
 				}
-				table.setModel(modelim);	
-				
-				
+				table.setModel(modelim);
+
 			}
 		});
 		btn_ecd10s.setBounds(22, 428, 150, 50);
 		contentPane.add(btn_ecd10s);
-		
+
 		JButton btn_pop_ecd = new JButton("pop_ECD10S");
 		btn_pop_ecd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
+
 				modelim.setColumnIdentifiers(kolonlar);
 				modelim.setRowCount(0);
 				ResultSet myRs = baglanti.yap(7);
@@ -607,20 +596,16 @@ public class fm2 extends JFrame {
 					e2.printStackTrace();
 				}
 				table.setModel(modelim);
-				
-				
-				
-				
-				
+
 			}
 		});
 		btn_pop_ecd.setBounds(22, 488, 150, 50);
 		contentPane.add(btn_pop_ecd);
-		
+
 		JButton btn_jazz_ecd = new JButton("jazz_ECD10S");
 		btn_jazz_ecd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				modelim.setColumnIdentifiers(kolonlar);
 				modelim.setRowCount(0);
 				ResultSet myRs = baglanti.yap(6);
@@ -645,17 +630,16 @@ public class fm2 extends JFrame {
 					e2.printStackTrace();
 				}
 				table.setModel(modelim);
-				
-				
+
 			}
 		});
 		btn_jazz_ecd.setBounds(22, 620, 150, 50);
 		contentPane.add(btn_jazz_ecd);
-		
+
 		JButton btn_kalsik_ecd = new JButton("klasik_ecd10s");
 		btn_kalsik_ecd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				modelim.setColumnIdentifiers(kolonlar);
 				modelim.setRowCount(0);
 				ResultSet myRs = baglanti.yap(8);
@@ -680,13 +664,66 @@ public class fm2 extends JFrame {
 					e2.printStackTrace();
 				}
 				table.setModel(modelim);
-				
-				
-				
+
 			}
 		});
 		btn_kalsik_ecd.setBounds(22, 553, 150, 50);
 		contentPane.add(btn_kalsik_ecd);
+
+		JButton btn_tumunu_ekle = new JButton("tumunu_ekle");
+		btn_tumunu_ekle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				fonksiyon();
+				ArrayList<String> sarkilar = new ArrayList<>();
+				String tur_id = "";
+				ResultSet myRs2 = baglanti.sorgulama_11(metin);
+				try {
+					while (myRs2.next()) {
+
+						tur_id = myRs2.getString("tur_id");
+
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				ResultSet myRs = baglanti.sorgulama_10(metin);
+				try {
+					while (myRs.next()) {
+
+						sarkilar.add(myRs.getString("sarki_id"));
+
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				String liste_id = "";
+				ResultSet myRs1 = baglanti.sorgulama_3(kullanici_id, tur_id);
+
+				try {
+					while (myRs1.next()) {
+						liste_id = myRs1.getString("liste_id");
+
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				for (int i = 0; i < sarkilar.size(); i++) {
+					String sql_sorgu = "INSERT INTO liste_islem (liste_id,sarki_id) VALUES(" + liste_id + ",'"
+							+ sarkilar.get(i) + "')";
+					baglanti.ekle(sql_sorgu);
+
+				}
+
+			}
+		});
+		btn_tumunu_ekle.setBounds(1124, 187, 150, 50);
+		contentPane.add(btn_tumunu_ekle);
 
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -719,7 +756,6 @@ public class fm2 extends JFrame {
 					ulke_id = modelim5.getValueAt(table.getSelectedRow(), 0).toString();
 
 				}
-				
 
 			}
 		});
