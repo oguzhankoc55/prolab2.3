@@ -47,8 +47,6 @@ public class fm2 extends JFrame {
 	Object[] satirlar5 = new Object[2];
 
 	private JTable table;
-	private JTable table_1;
-	private JTable table_2;
 	static int sayac = 0;
 	String kullanici_id = "";
 	String kullanici_ad = "";
@@ -78,7 +76,7 @@ public class fm2 extends JFrame {
 
 		JScrollPane scrollPane = new JScrollPane();
 
-		scrollPane.setBounds(20, 97, 602, 573);
+		scrollPane.setBounds(229, 97, 822, 573);
 		contentPane.add(scrollPane);
 
 		table = new JTable();
@@ -117,7 +115,7 @@ public class fm2 extends JFrame {
 				table.setModel(modelim);
 			}
 		});
-		btnListele.setBounds(20, 8, 200, 90);
+		btnListele.setBounds(972, 27, 150, 50);
 		contentPane.add(btnListele);
 
 		JButton btn_kaldir = new JButton("Kaldir");
@@ -164,12 +162,12 @@ public class fm2 extends JFrame {
 				baglanti.sil(sql_sorgu_sil);
 			}
 		});
-		btn_kaldir.setBounds(644, 323, 89, 23);
+		btn_kaldir.setBounds(1124, 613, 150, 50);
 		contentPane.add(btn_kaldir);
 
 		JLabel lblNewLabel = new JLabel("Alan:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel.setBounds(678, 10, 97, 52);
+		lblNewLabel.setBounds(578, 27, 150, 60);
 		contentPane.add(lblNewLabel);
 
 		contentPane.add(lblNewLabel);
@@ -203,16 +201,8 @@ public class fm2 extends JFrame {
 
 			}
 		});
-		btnAlbumListele.setBounds(219, 8, 200, 90);
+		btnAlbumListele.setBounds(377, 27, 150, 50);
 		contentPane.add(btnAlbumListele);
-
-		table_2 = new JTable();
-		table_2.setBounds(0, 0, 600, 1);
-		contentPane.add(table_2);
-
-		table_1 = new JTable();
-		table_1.setBounds(0, 0, 600, 1);
-		contentPane.add(table_1);
 
 		JButton btnNewButton = new JButton("Premium Kullan\u0131c\u0131lar");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -242,7 +232,7 @@ public class fm2 extends JFrame {
 
 			}
 		});
-		btnNewButton.setBounds(620, 591, 176, 79);
+		btnNewButton.setBounds(168, 27, 150, 50);
 		contentPane.add(btnNewButton);
 
 		JButton btn_gecis = new JButton("gecis");
@@ -277,7 +267,7 @@ public class fm2 extends JFrame {
 
 			}
 		});
-		btn_gecis.setBounds(644, 357, 85, 21);
+		btn_gecis.setBounds(1124, 488, 150, 50);
 		contentPane.add(btn_gecis);
 
 		JButton btn_benim_listem = new JButton("benim listem");
@@ -310,7 +300,7 @@ public class fm2 extends JFrame {
 
 			}
 		});
-		btn_benim_listem.setBounds(417, 8, 205, 90);
+		btn_benim_listem.setBounds(788, 27, 150, 50);
 		contentPane.add(btn_benim_listem);
 
 		JButton btn_ekle = new JButton("ekle");
@@ -350,7 +340,7 @@ public class fm2 extends JFrame {
 
 			}
 		});
-		btn_ekle.setBounds(643, 291, 85, 21);
+		btn_ekle.setBounds(1124, 248, 150, 50);
 		contentPane.add(btn_ekle);
 
 		JButton btnNewButton_1 = new JButton("Takip Et");
@@ -369,7 +359,7 @@ public class fm2 extends JFrame {
 			}
 
 		});
-		btnNewButton_1.setBounds(644, 413, 89, 23);
+		btnNewButton_1.setBounds(1124, 308, 150, 50);
 		contentPane.add(btnNewButton_1);
 
 		JButton btnNewButton_2 = new JButton("Takip Ettiklerim");
@@ -402,7 +392,7 @@ public class fm2 extends JFrame {
 
 			}
 		});
-		btnNewButton_2.setBounds(620, 502, 176, 90);
+		btnNewButton_2.setBounds(22, 248, 150, 50);
 		contentPane.add(btnNewButton_2);
 
 		JButton btnNewButton_3 = new JButton("Takipten \u00C7\u0131kar");
@@ -420,7 +410,7 @@ public class fm2 extends JFrame {
 
 			}
 		});
-		btnNewButton_3.setBounds(644, 447, 127, 23);
+		btnNewButton_3.setBounds(1124, 553, 150, 50);
 		contentPane.add(btnNewButton_3);
 
 		JButton btnNewButton_4 = new JButton("TakipL. Gecis");
@@ -451,7 +441,7 @@ public class fm2 extends JFrame {
 
 			}
 		});
-		btnNewButton_4.setBounds(758, 353, 120, 52);
+		btnNewButton_4.setBounds(1124, 428, 150, 50);
 		contentPane.add(btnNewButton_4);
 		
 		JButton btn_dinle = new JButton("dinle");
@@ -484,7 +474,7 @@ public class fm2 extends JFrame {
 				
 			}
 		});
-		btn_dinle.setBounds(776, 193, 85, 52);
+		btn_dinle.setBounds(1124, 368, 150, 50);
 		contentPane.add(btn_dinle);
 		
 		JButton btn_ulke = new JButton("ulkeler");
@@ -513,7 +503,7 @@ public class fm2 extends JFrame {
 				table.setModel(modelim5);
 			}
 		});
-		btn_ulke.setBounds(644, 196, 85, 49);
+		btn_ulke.setBounds(22, 368, 150, 50);
 		contentPane.add(btn_ulke);
 		
 		JButton btn_ulke_sarki = new JButton("ulke-sarki");
@@ -549,7 +539,7 @@ public class fm2 extends JFrame {
 				
 			}
 		});
-		btn_ulke_sarki.setBounds(776, 271, 85, 41);
+		btn_ulke_sarki.setBounds(22, 308, 150, 50);
 		contentPane.add(btn_ulke_sarki);
 		
 		JButton btn_ecd10s = new JButton("ECD10S");
@@ -585,7 +575,7 @@ public class fm2 extends JFrame {
 				
 			}
 		});
-		btn_ecd10s.setBounds(659, 97, 137, 52);
+		btn_ecd10s.setBounds(22, 428, 150, 50);
 		contentPane.add(btn_ecd10s);
 		
 		JButton btn_pop_ecd = new JButton("pop_ECD10S");
@@ -624,7 +614,7 @@ public class fm2 extends JFrame {
 				
 			}
 		});
-		btn_pop_ecd.setBounds(1028, 88, 137, 34);
+		btn_pop_ecd.setBounds(22, 488, 150, 50);
 		contentPane.add(btn_pop_ecd);
 		
 		JButton btn_jazz_ecd = new JButton("jazz_ECD10S");
@@ -659,7 +649,7 @@ public class fm2 extends JFrame {
 				
 			}
 		});
-		btn_jazz_ecd.setBounds(858, 30, 120, 34);
+		btn_jazz_ecd.setBounds(22, 620, 150, 50);
 		contentPane.add(btn_jazz_ecd);
 		
 		JButton btn_kalsik_ecd = new JButton("klasik_ecd10s");
@@ -695,7 +685,7 @@ public class fm2 extends JFrame {
 				
 			}
 		});
-		btn_kalsik_ecd.setBounds(1045, 30, 120, 34);
+		btn_kalsik_ecd.setBounds(22, 553, 150, 50);
 		contentPane.add(btn_kalsik_ecd);
 
 		table.addMouseListener(new MouseAdapter() {

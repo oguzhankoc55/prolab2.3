@@ -45,10 +45,11 @@ public class fm3 extends JFrame {
 	DefaultTableModel modelim5 = new DefaultTableModel();
 	Object[] kolonlar5 = { "Id", "Ulke Ad" };
 	Object[] satirlar5 = new Object[2];
+	DefaultTableModel modelim6 = new DefaultTableModel();
+	Object[] kolonlar6 = { "Id", "Odenme Durumu"};
+	Object[] satirlar6 = new Object[2];
 
 	private JTable table;
-	private JTable table_1;
-	private JTable table_2;
 	static int sayac = 0;
 	String kullanici_id = "";
 	String kullanici_ad = "";
@@ -78,7 +79,7 @@ public class fm3 extends JFrame {
 
 		JScrollPane scrollPane = new JScrollPane();
 
-		scrollPane.setBounds(20, 97, 602, 573);
+		scrollPane.setBounds(229, 97, 822, 573);
 		contentPane.add(scrollPane);
 
 		table = new JTable();
@@ -117,7 +118,7 @@ public class fm3 extends JFrame {
 				table.setModel(modelim);
 			}
 		});
-		btnListele.setBounds(20, 8, 200, 90);
+		btnListele.setBounds(972, 27, 150, 50);
 		contentPane.add(btnListele);
 
 		JButton btn_kaldir = new JButton("Kaldir");
@@ -164,12 +165,12 @@ public class fm3 extends JFrame {
 				baglanti.sil(sql_sorgu_sil);
 			}
 		});
-		btn_kaldir.setBounds(644, 323, 89, 23);
+		btn_kaldir.setBounds(1124, 613, 150, 50);
 		contentPane.add(btn_kaldir);
 
 		JLabel lblNewLabel = new JLabel("Alan:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel.setBounds(678, 10, 97, 52);
+		lblNewLabel.setBounds(578, 27, 150, 60);
 		contentPane.add(lblNewLabel);
 
 		contentPane.add(lblNewLabel);
@@ -203,16 +204,8 @@ public class fm3 extends JFrame {
 
 			}
 		});
-		btnAlbumListele.setBounds(219, 8, 200, 90);
+		btnAlbumListele.setBounds(377, 27, 150, 50);
 		contentPane.add(btnAlbumListele);
-
-		table_2 = new JTable();
-		table_2.setBounds(0, 0, 600, 1);
-		contentPane.add(table_2);
-
-		table_1 = new JTable();
-		table_1.setBounds(0, 0, 600, 1);
-		contentPane.add(table_1);
 
 		JButton btnNewButton = new JButton("Premium Kullan\u0131c\u0131lar");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -242,7 +235,7 @@ public class fm3 extends JFrame {
 
 			}
 		});
-		btnNewButton.setBounds(620, 591, 176, 79);
+		btnNewButton.setBounds(168, 27, 150, 50);
 		contentPane.add(btnNewButton);
 
 		JButton btn_gecis = new JButton("gecis");
@@ -277,7 +270,7 @@ public class fm3 extends JFrame {
 
 			}
 		});
-		btn_gecis.setBounds(644, 357, 85, 21);
+		btn_gecis.setBounds(1124, 488, 150, 50);
 		contentPane.add(btn_gecis);
 
 		JButton btn_benim_listem = new JButton("benim listem");
@@ -310,7 +303,7 @@ public class fm3 extends JFrame {
 
 			}
 		});
-		btn_benim_listem.setBounds(417, 8, 205, 90);
+		btn_benim_listem.setBounds(788, 27, 150, 50);
 		contentPane.add(btn_benim_listem);
 
 		JButton btn_ekle = new JButton("ekle");
@@ -350,7 +343,7 @@ public class fm3 extends JFrame {
 
 			}
 		});
-		btn_ekle.setBounds(643, 291, 85, 21);
+		btn_ekle.setBounds(1124, 248, 150, 50);
 		contentPane.add(btn_ekle);
 
 		JButton btnNewButton_1 = new JButton("Takip Et");
@@ -369,7 +362,7 @@ public class fm3 extends JFrame {
 			}
 
 		});
-		btnNewButton_1.setBounds(644, 413, 89, 23);
+		btnNewButton_1.setBounds(1124, 308, 150, 50);
 		contentPane.add(btnNewButton_1);
 
 		JButton btnNewButton_2 = new JButton("Takip Ettiklerim");
@@ -402,7 +395,7 @@ public class fm3 extends JFrame {
 
 			}
 		});
-		btnNewButton_2.setBounds(620, 502, 176, 90);
+		btnNewButton_2.setBounds(22, 248, 150, 50);
 		contentPane.add(btnNewButton_2);
 
 		JButton btnNewButton_3 = new JButton("Takipten \u00C7\u0131kar");
@@ -420,7 +413,7 @@ public class fm3 extends JFrame {
 
 			}
 		});
-		btnNewButton_3.setBounds(644, 447, 127, 23);
+		btnNewButton_3.setBounds(1124, 553, 150, 50);
 		contentPane.add(btnNewButton_3);
 
 		JButton btnNewButton_4 = new JButton("TakipL. Gecis");
@@ -451,7 +444,7 @@ public class fm3 extends JFrame {
 
 			}
 		});
-		btnNewButton_4.setBounds(758, 353, 120, 52);
+		btnNewButton_4.setBounds(1124, 428, 150, 50);
 		contentPane.add(btnNewButton_4);
 		
 		JButton btn_dinle = new JButton("dinle");
@@ -484,7 +477,7 @@ public class fm3 extends JFrame {
 				
 			}
 		});
-		btn_dinle.setBounds(776, 193, 85, 52);
+		btn_dinle.setBounds(1124, 368, 150, 50);
 		contentPane.add(btn_dinle);
 		
 		JButton btn_ulke = new JButton("ulkeler");
@@ -513,7 +506,7 @@ public class fm3 extends JFrame {
 				table.setModel(modelim5);
 			}
 		});
-		btn_ulke.setBounds(644, 196, 85, 49);
+		btn_ulke.setBounds(22, 368, 150, 50);
 		contentPane.add(btn_ulke);
 		
 		JButton btn_ulke_sarki = new JButton("ulke-sarki");
@@ -549,7 +542,7 @@ public class fm3 extends JFrame {
 				
 			}
 		});
-		btn_ulke_sarki.setBounds(776, 271, 85, 41);
+		btn_ulke_sarki.setBounds(22, 308, 150, 50);
 		contentPane.add(btn_ulke_sarki);
 		
 		JButton btn_ecd10s = new JButton("ECD10S");
@@ -585,7 +578,7 @@ public class fm3 extends JFrame {
 				
 			}
 		});
-		btn_ecd10s.setBounds(659, 97, 137, 52);
+		btn_ecd10s.setBounds(22, 428, 150, 50);
 		contentPane.add(btn_ecd10s);
 		
 		JButton btn_pop_ecd = new JButton("pop_ECD10S");
@@ -624,7 +617,7 @@ public class fm3 extends JFrame {
 				
 			}
 		});
-		btn_pop_ecd.setBounds(1028, 88, 137, 34);
+		btn_pop_ecd.setBounds(22, 488, 150, 50);
 		contentPane.add(btn_pop_ecd);
 		
 		JButton btn_jazz_ecd = new JButton("jazz_ECD10S");
@@ -659,7 +652,7 @@ public class fm3 extends JFrame {
 				
 			}
 		});
-		btn_jazz_ecd.setBounds(858, 30, 120, 34);
+		btn_jazz_ecd.setBounds(22, 620, 150, 50);
 		contentPane.add(btn_jazz_ecd);
 		
 		JButton btn_kalsik_ecd = new JButton("klasik_ecd10s");
@@ -695,8 +688,168 @@ public class fm3 extends JFrame {
 				
 			}
 		});
-		btn_kalsik_ecd.setBounds(1045, 30, 120, 34);
+		btn_kalsik_ecd.setBounds(22, 553, 150, 50);
 		contentPane.add(btn_kalsik_ecd);
+		
+		JButton btn_takipciler = new JButton("takipciler");
+		btn_takipciler.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				sayac = 4;
+
+				fonksiyon();
+
+				modelim3.setColumnIdentifiers(kolonlar3);
+				modelim3.setRowCount(0);
+
+				ResultSet myRs = baglanti.sorgulama_8(kullanici_id);
+
+				try {
+					while (myRs.next()) {
+
+						satirlar3[0] = myRs.getString("kul_id");
+						satirlar3[1] = myRs.getString("kul_ad");
+
+						modelim3.addRow(satirlar3);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim3);
+				System.out.println(giris.k_id);
+				
+			}
+		});
+		btn_takipciler.setBounds(22, 188, 150, 50);
+		contentPane.add(btn_takipciler);
+		
+		JButton btn_odeme_kontrol = new JButton("odeme_kontrol");
+		btn_odeme_kontrol.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				fonksiyon();
+				modelim6.setColumnIdentifiers(kolonlar6);
+				modelim6.setRowCount(0);
+				ResultSet myRs = baglanti.sorgulama_9(kullanici_id);
+				
+				try {
+					while (myRs.next()) {
+
+						satirlar6[0] = myRs.getString("kul_id"); 
+						if(myRs.getBoolean("odenme")) {
+							satirlar6[1]="Odemesi yapildi";
+						}else {
+							satirlar6[1]="Odemesi yapilmadi";
+						}
+						
+						modelim6.addRow(satirlar6);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim6);
+				
+				
+				
+				
+			}
+		});
+		btn_odeme_kontrol.setBounds(22, 128, 150, 50);
+		contentPane.add(btn_odeme_kontrol);
+		
+		JButton btn_odeme_yap = new JButton("odeme_yap");
+		btn_odeme_yap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				fonksiyon();
+			
+				String sql_sorgu="UPDATE odenme SET odenme= true WHERE kul_id='"+kullanici_id+"'";
+
+					
+					baglanti.update(sql_sorgu);
+					
+				
+				
+			}
+		});
+		btn_odeme_yap.setBounds(1124, 186, 150, 50);
+		contentPane.add(btn_odeme_yap);
+		
+		JButton btn_tumunu_ekle = new JButton("tumunu_ekle");
+		btn_tumunu_ekle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				fonksiyon();
+
+				sayac = 1;
+
+				modelim.setColumnIdentifiers(kolonlar);
+				modelim.setRowCount(0);
+				ResultSet myRs = baglanti.sorgulama_1(metin);
+
+				
+				try {
+					while (myRs.next()) {
+						
+
+						sarki_id = myRs.getString("sarki_id");
+						
+						
+						String sql_sorgu_tur = "select tur_id from sarki where sarki_id='" + sarki_id + "'";
+						String tur_id = "";
+						ResultSet myRs2 = baglanti.yap2(sql_sorgu_tur);
+						try {
+							while (myRs2.next()) {
+
+								tur_id = myRs2.getString("tur_id");
+							}
+						} catch (Exception e2) {
+							// TODO: handle exception
+						}
+						String liste_id = "";
+						ResultSet myRs1 = baglanti.sorgulama_3(kullanici_id, tur_id);
+
+						try {
+							while (myRs1.next()) {
+								liste_id = myRs1.getString("liste_id");
+
+							}
+						} catch (Exception e2) {
+							// TODO: handle exception
+						}
+
+						String sql_sorgu = "INSERT INTO liste_islem (liste_id,sarki_id) VALUES(" + liste_id + ",'" + sarki_id
+								+ "')";
+						System.out.println(sql_sorgu);
+
+						baglanti.ekle(sql_sorgu);
+						
+						
+						
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				
+				
+				
+				
+				
+	
+				
+				
+				
+				
+			}
+		});
+		btn_tumunu_ekle.setBounds(1124, 128, 150, 50);
+		contentPane.add(btn_tumunu_ekle);
 
 		table.addMouseListener(new MouseAdapter() {
 			@Override
