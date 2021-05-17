@@ -1,4 +1,4 @@
-package deneme;
+package deneme1;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -17,7 +17,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Font;
 
-public class fm2 extends JFrame {
+public class kullanici extends JFrame {
 
 	String metin = "";
 	String metin1 = "";
@@ -44,7 +44,9 @@ public class fm2 extends JFrame {
 	DefaultTableModel modelim5 = new DefaultTableModel();
 	Object[] kolonlar5 = { "Id", "Ulke Ad" };
 	Object[] satirlar5 = new Object[2];
-
+	DefaultTableModel modelim6 = new DefaultTableModel();
+	Object[] kolonlar6 = { "Id", "Odenme Durumu" };
+	Object[] satirlar6 = new Object[2];
 	private JTable table;
 	static int sayac = 0;
 	String kullanici_id = "";
@@ -54,7 +56,7 @@ public class fm2 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					fm2 frame = new fm2();
+					kullanici frame = new kullanici();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -63,28 +65,29 @@ public class fm2 extends JFrame {
 		});
 	}
 
-	public fm2() {
+	public kullanici() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1361, 720);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		
 
 		JScrollPane scrollPane = new JScrollPane();
 
 		scrollPane.setBounds(229, 97, 822, 573);
 		contentPane.add(scrollPane);
-
 		table = new JTable();
-
 		table.setBounds(158, 219, 256, 123);
 		scrollPane.setViewportView(table);
-
 		JButton btnListele = new JButton("Sarki Listele");
 		btnListele.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sayac = 1;
+				ResultSet myRs = baglanti.yap(0);
+				fonksiyon2(myRs);
+				/*sayac = 1;
 
 				modelim.setColumnIdentifiers(kolonlar);
 				modelim.setRowCount(0);
@@ -109,11 +112,27 @@ public class fm2 extends JFrame {
 					// TODO: handle exception
 					e2.printStackTrace();
 				}
-				table.setModel(modelim);
+				table.setModel(modelim);*/
 			}
 		});
 		btnListele.setBounds(972, 27, 150, 50);
 		contentPane.add(btnListele);
+		
+		
+		
+		
+		JButton btn_odeme_yap = new JButton("odeme_yap");
+		JButton btn_odeme_kontrol = new JButton("odeme_kontrol");
+		JButton btn_takipciler = new JButton("takipciler");
+		
+		if(giris.tur==1) {
+			btn_odeme_yap.setVisible(false);
+			btn_odeme_kontrol.setVisible(false);
+			btn_takipciler.setVisible(false);
+		}
+		
+		
+		
 
 		JButton btn_kaldir = new JButton("Kaldir");
 		btn_kaldir.addActionListener(new ActionListener() {
@@ -237,10 +256,10 @@ public class fm2 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				sayac = 1;
-
+				ResultSet myRs = baglanti.sorgulama_1(metin);
 				modelim.setColumnIdentifiers(kolonlar);
 				modelim.setRowCount(0);
-				ResultSet myRs = baglanti.sorgulama_1(metin);
+				
 
 				try {
 					while (myRs.next()) {
@@ -670,6 +689,91 @@ public class fm2 extends JFrame {
 		btn_kalsik_ecd.setBounds(22, 553, 150, 50);
 		contentPane.add(btn_kalsik_ecd);
 
+		
+		btn_takipciler.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				sayac = 4;
+
+				fonksiyon();
+
+				modelim3.setColumnIdentifiers(kolonlar3);
+				modelim3.setRowCount(0);
+
+				ResultSet myRs = baglanti.sorgulama_8(kullanici_id);
+
+				try {
+					while (myRs.next()) {
+
+						satirlar3[0] = myRs.getString("kul_id");
+						satirlar3[1] = myRs.getString("kul_ad");
+
+						modelim3.addRow(satirlar3);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim3);
+				System.out.println(giris.k_id);
+
+			}
+		});
+		btn_takipciler.setBounds(22, 188, 150, 50);
+		contentPane.add(btn_takipciler);
+		
+		
+
+		
+		btn_odeme_kontrol.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				fonksiyon();
+				modelim6.setColumnIdentifiers(kolonlar6);
+				modelim6.setRowCount(0);
+				ResultSet myRs = baglanti.sorgulama_9(kullanici_id);
+
+				try {
+					while (myRs.next()) {
+
+						satirlar6[0] = myRs.getString("kul_id");
+						if (myRs.getBoolean("odenme")) {
+							satirlar6[1] = "Odemesi yapildi";
+						} else {
+							satirlar6[1] = "Odemesi yapilmadi";
+						}
+
+						modelim6.addRow(satirlar6);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim6);
+
+			}
+		});
+		btn_odeme_kontrol.setBounds(22, 128, 150, 50);
+		contentPane.add(btn_odeme_kontrol);
+
+	
+		btn_odeme_yap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				fonksiyon();
+
+				String sql_sorgu = "UPDATE odenme SET odenme= true WHERE kul_id='" + kullanici_id + "'";
+
+				baglanti.update(sql_sorgu);
+
+			}
+		});
+		btn_odeme_yap.setBounds(1124, 186, 150, 50);
+		contentPane.add(btn_odeme_yap);
+		
+
+
 		JButton btn_tumunu_ekle = new JButton("tumunu_ekle");
 		btn_tumunu_ekle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -722,7 +826,7 @@ public class fm2 extends JFrame {
 
 			}
 		});
-		btn_tumunu_ekle.setBounds(1124, 187, 150, 50);
+		btn_tumunu_ekle.setBounds(1124, 128, 150, 50);
 		contentPane.add(btn_tumunu_ekle);
 
 		table.addMouseListener(new MouseAdapter() {
@@ -776,4 +880,36 @@ public class fm2 extends JFrame {
 			e2.printStackTrace();
 		}
 	}
+	void fonksiyon2(ResultSet myRs) {
+		sayac = 1;
+		
+		modelim.setColumnIdentifiers(kolonlar);
+		modelim.setRowCount(0);
+	
+
+		try {
+			while (myRs.next()) {
+				satirlar[0] = myRs.getString("sarki_id");
+				satirlar[1] = myRs.getString("sarki_adi");
+				satirlar[2] = myRs.getString("sarki_tarih");
+				satirlar[3] = myRs.getString("tur_ad");
+				satirlar[4] = myRs.getString("sarki_sure");
+				satirlar[5] = myRs.getString("sarki_dinlenme");
+
+				satirlar[6] = myRs.getString("album_ad");
+				satirlar[7] = myRs.getString("sanatci_ad");
+
+				modelim.addRow(satirlar);
+			}
+
+		} catch (Exception e2) {
+			// TODO: handle exception
+			e2.printStackTrace();
+		}
+		table.setModel(modelim);
+		
+		//return myRs;
+		
+	}
+	
 }

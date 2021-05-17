@@ -1,4 +1,4 @@
-package deneme;
+package deneme1;
 
 import java.awt.EventQueue;
 
@@ -138,7 +138,7 @@ public class giris extends JFrame {
 
 							if (sayac > 0) {
 								if (tur == 3) {
-									fm1 ekr = new fm1();
+									admin ekr = new admin();
 									ekr.setVisible(true);
 									setVisible(false);
 
@@ -146,13 +146,8 @@ public class giris extends JFrame {
 
 							}
 
-							else if (tur == 1) {
-								fm2 ekr = new fm2();
-								ekr.setVisible(true);
-								setVisible(false);
-
-							} else if (tur == 2) {
-								fm3 ekr = new fm3();
+							else {
+								kullanici ekr = new kullanici();
 								ekr.setVisible(true);
 								setVisible(false);
 

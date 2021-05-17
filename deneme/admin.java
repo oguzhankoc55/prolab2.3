@@ -1,4 +1,4 @@
-package deneme;
+package deneme1;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -18,7 +18,7 @@ import java.awt.event.MouseEvent;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-public class fm1 extends JFrame {
+public class admin extends JFrame {
 
 	private JPanel contentPane;
 	DefaultTableModel modelim = new DefaultTableModel();
@@ -54,7 +54,7 @@ public class fm1 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					fm1 frame = new fm1();
+					admin frame = new admin();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,7 +62,7 @@ public class fm1 extends JFrame {
 			}
 		});
 	}
-	public fm1() {
+	public admin() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1361, 720);
 		contentPane = new JPanel();

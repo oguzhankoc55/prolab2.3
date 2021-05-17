@@ -1,4 +1,4 @@
-package deneme;
+package deneme1;
 
 import java.sql.*;
 
