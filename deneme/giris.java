@@ -1,4 +1,4 @@
-package deneme1;
+package deneme;
 
 import java.awt.EventQueue;
 

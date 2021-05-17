@@ -1,4 +1,4 @@
-package deneme1;
+package deneme;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -72,8 +72,6 @@ public class kullanici extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
 
 		JScrollPane scrollPane = new JScrollPane();
 
@@ -87,52 +85,21 @@ public class kullanici extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				ResultSet myRs = baglanti.yap(0);
 				fonksiyon2(myRs);
-				/*sayac = 1;
 
-				modelim.setColumnIdentifiers(kolonlar);
-				modelim.setRowCount(0);
-				ResultSet myRs = baglanti.yap(0);
-
-				try {
-					while (myRs.next()) {
-						satirlar[0] = myRs.getString("sarki_id");
-						satirlar[1] = myRs.getString("sarki_adi");
-						satirlar[2] = myRs.getString("sarki_tarih");
-						satirlar[3] = myRs.getString("tur_ad");
-						satirlar[4] = myRs.getString("sarki_sure");
-						satirlar[5] = myRs.getString("sarki_dinlenme");
-
-						satirlar[6] = myRs.getString("album_ad");
-						satirlar[7] = myRs.getString("sanatci_ad");
-
-						modelim.addRow(satirlar);
-					}
-
-				} catch (Exception e2) {
-					// TODO: handle exception
-					e2.printStackTrace();
-				}
-				table.setModel(modelim);*/
 			}
 		});
 		btnListele.setBounds(972, 27, 150, 50);
 		contentPane.add(btnListele);
-		
-		
-		
-		
+
 		JButton btn_odeme_yap = new JButton("odeme_yap");
 		JButton btn_odeme_kontrol = new JButton("odeme_kontrol");
 		JButton btn_takipciler = new JButton("takipciler");
-		
-		if(giris.tur==1) {
+
+		if (giris.tur == 1) {
 			btn_odeme_yap.setVisible(false);
 			btn_odeme_kontrol.setVisible(false);
 			btn_takipciler.setVisible(false);
 		}
-		
-		
-		
 
 		JButton btn_kaldir = new JButton("Kaldir");
 		btn_kaldir.addActionListener(new ActionListener() {
@@ -255,31 +222,8 @@ public class kullanici extends JFrame {
 		btn_gecis.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				sayac = 1;
 				ResultSet myRs = baglanti.sorgulama_1(metin);
-				modelim.setColumnIdentifiers(kolonlar);
-				modelim.setRowCount(0);
-				
-
-				try {
-					while (myRs.next()) {
-						satirlar[0] = myRs.getString("sarki_id");
-						satirlar[1] = myRs.getString("sarki_adi");
-						satirlar[2] = myRs.getString("sarki_tarih");
-						satirlar[3] = myRs.getString("tur_ad");
-						satirlar[4] = myRs.getString("sarki_sure");
-						satirlar[5] = myRs.getString("sarki_dinlenme");
-						satirlar[6] = myRs.getString("album_ad");
-						satirlar[7] = myRs.getString("sanatci_ad");
-
-						modelim.addRow(satirlar);
-					}
-
-				} catch (Exception e2) {
-					// TODO: handle exception
-					e2.printStackTrace();
-				}
-				table.setModel(modelim);
+				fonksiyon2(myRs);
 
 			}
 		});
@@ -521,32 +465,8 @@ public class kullanici extends JFrame {
 		JButton btn_ulke_sarki = new JButton("ulke-sarki");
 		btn_ulke_sarki.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				// sayac = 6;
-				modelim.setColumnIdentifiers(kolonlar);
-				modelim.setRowCount(0);
 				ResultSet myRs = baglanti.sorgulama_7(ulke_id);
-
-				try {
-					while (myRs.next()) {
-
-						satirlar[0] = myRs.getString("sarki_id");
-						satirlar[1] = myRs.getString("sarki_adi");
-						satirlar[2] = myRs.getString("sarki_tarih");
-						satirlar[3] = myRs.getString("tur_ad");
-						satirlar[4] = myRs.getString("sarki_sure");
-						satirlar[5] = myRs.getString("sarki_dinlenme");
-						satirlar[6] = myRs.getString("album_ad");
-						satirlar[7] = myRs.getString("sanatci_ad");
-
-						modelim.addRow(satirlar);
-					}
-
-				} catch (Exception e2) {
-					// TODO: handle exception
-					e2.printStackTrace();
-				}
-				table.setModel(modelim);
+				fonksiyon2(myRs);
 
 			}
 		});
@@ -557,30 +477,8 @@ public class kullanici extends JFrame {
 		btn_ecd10s.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				modelim.setColumnIdentifiers(kolonlar);
-				modelim.setRowCount(0);
 				ResultSet myRs = baglanti.yap(5);
-
-				try {
-					while (myRs.next()) {
-
-						satirlar[0] = myRs.getString("sarki_id");
-						satirlar[1] = myRs.getString("sarki_adi");
-						satirlar[2] = myRs.getString("sarki_tarih");
-						satirlar[3] = myRs.getString("tur_ad");
-						satirlar[4] = myRs.getString("sarki_sure");
-						satirlar[5] = myRs.getString("sarki_dinlenme");
-						satirlar[6] = myRs.getString("album_ad");
-						satirlar[7] = myRs.getString("sanatci_ad");
-
-						modelim.addRow(satirlar);
-					}
-
-				} catch (Exception e2) {
-					// TODO: handle exception
-					e2.printStackTrace();
-				}
-				table.setModel(modelim);
+				fonksiyon2(myRs);
 
 			}
 		});
@@ -591,30 +489,8 @@ public class kullanici extends JFrame {
 		btn_pop_ecd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				modelim.setColumnIdentifiers(kolonlar);
-				modelim.setRowCount(0);
 				ResultSet myRs = baglanti.yap(7);
-
-				try {
-					while (myRs.next()) {
-
-						satirlar[0] = myRs.getString("sarki_id");
-						satirlar[1] = myRs.getString("sarki_adi");
-						satirlar[2] = myRs.getString("sarki_tarih");
-						satirlar[3] = myRs.getString("tur_ad");
-						satirlar[4] = myRs.getString("sarki_sure");
-						satirlar[5] = myRs.getString("sarki_dinlenme");
-						satirlar[6] = myRs.getString("album_ad");
-						satirlar[7] = myRs.getString("sanatci_ad");
-
-						modelim.addRow(satirlar);
-					}
-
-				} catch (Exception e2) {
-					// TODO: handle exception
-					e2.printStackTrace();
-				}
-				table.setModel(modelim);
+				fonksiyon2(myRs);
 
 			}
 		});
@@ -625,30 +501,8 @@ public class kullanici extends JFrame {
 		btn_jazz_ecd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				modelim.setColumnIdentifiers(kolonlar);
-				modelim.setRowCount(0);
 				ResultSet myRs = baglanti.yap(6);
-
-				try {
-					while (myRs.next()) {
-
-						satirlar[0] = myRs.getString("sarki_id");
-						satirlar[1] = myRs.getString("sarki_adi");
-						satirlar[2] = myRs.getString("sarki_tarih");
-						satirlar[3] = myRs.getString("tur_ad");
-						satirlar[4] = myRs.getString("sarki_sure");
-						satirlar[5] = myRs.getString("sarki_dinlenme");
-						satirlar[6] = myRs.getString("album_ad");
-						satirlar[7] = myRs.getString("sanatci_ad");
-
-						modelim.addRow(satirlar);
-					}
-
-				} catch (Exception e2) {
-					// TODO: handle exception
-					e2.printStackTrace();
-				}
-				table.setModel(modelim);
+				fonksiyon2(myRs);
 
 			}
 		});
@@ -659,37 +513,14 @@ public class kullanici extends JFrame {
 		btn_kalsik_ecd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				modelim.setColumnIdentifiers(kolonlar);
-				modelim.setRowCount(0);
 				ResultSet myRs = baglanti.yap(8);
-
-				try {
-					while (myRs.next()) {
-
-						satirlar[0] = myRs.getString("sarki_id");
-						satirlar[1] = myRs.getString("sarki_adi");
-						satirlar[2] = myRs.getString("sarki_tarih");
-						satirlar[3] = myRs.getString("tur_ad");
-						satirlar[4] = myRs.getString("sarki_sure");
-						satirlar[5] = myRs.getString("sarki_dinlenme");
-						satirlar[6] = myRs.getString("album_ad");
-						satirlar[7] = myRs.getString("sanatci_ad");
-
-						modelim.addRow(satirlar);
-					}
-
-				} catch (Exception e2) {
-					// TODO: handle exception
-					e2.printStackTrace();
-				}
-				table.setModel(modelim);
+				fonksiyon2(myRs);
 
 			}
 		});
 		btn_kalsik_ecd.setBounds(22, 553, 150, 50);
 		contentPane.add(btn_kalsik_ecd);
 
-		
 		btn_takipciler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -722,10 +553,7 @@ public class kullanici extends JFrame {
 		});
 		btn_takipciler.setBounds(22, 188, 150, 50);
 		contentPane.add(btn_takipciler);
-		
-		
 
-		
 		btn_odeme_kontrol.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				fonksiyon();
@@ -757,7 +585,6 @@ public class kullanici extends JFrame {
 		btn_odeme_kontrol.setBounds(22, 128, 150, 50);
 		contentPane.add(btn_odeme_kontrol);
 
-	
 		btn_odeme_yap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -771,8 +598,6 @@ public class kullanici extends JFrame {
 		});
 		btn_odeme_yap.setBounds(1124, 186, 150, 50);
 		contentPane.add(btn_odeme_yap);
-		
-
 
 		JButton btn_tumunu_ekle = new JButton("tumunu_ekle");
 		btn_tumunu_ekle.addActionListener(new ActionListener() {
@@ -880,12 +705,13 @@ public class kullanici extends JFrame {
 			e2.printStackTrace();
 		}
 	}
+
 	void fonksiyon2(ResultSet myRs) {
+		fonksiyon2(myRs);
 		sayac = 1;
-		
+
 		modelim.setColumnIdentifiers(kolonlar);
 		modelim.setRowCount(0);
-	
 
 		try {
 			while (myRs.next()) {
@@ -907,9 +733,7 @@ public class kullanici extends JFrame {
 			e2.printStackTrace();
 		}
 		table.setModel(modelim);
-		
-		//return myRs;
-		
+
 	}
-	
+
 }

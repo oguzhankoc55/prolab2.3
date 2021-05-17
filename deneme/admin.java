@@ -1,4 +1,4 @@
-package deneme1;
+package deneme;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -50,6 +50,7 @@ public class admin extends JFrame {
 	private JTextField txt_sanatci_ad;
 	private JTextField txt_sanatci_ulke;
 	static int sayac1 = 0, sayac2 = 0, sayac3 = 0;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -62,6 +63,7 @@ public class admin extends JFrame {
 			}
 		});
 	}
+
 	public admin() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1361, 720);
@@ -98,10 +100,8 @@ public class admin extends JFrame {
 						satirlar[3] = myRs.getString("tur_ad");
 						satirlar[4] = myRs.getString("sarki_sure");
 						satirlar[5] = myRs.getString("sarki_dinlenme");
-
 						satirlar[6] = myRs.getString("album_ad");
 						satirlar[7] = myRs.getString("sanatci_ad");
-
 						modelim.addRow(satirlar);
 					}
 
@@ -144,7 +144,6 @@ public class admin extends JFrame {
 				String tur_ids = "";
 				String album_ids = "";
 				String sanatci_ids = "";
-
 				id = txt_id.getText();
 				ad = txt_ad.getText();
 				tarih = txt_tarih.getText();
@@ -153,11 +152,6 @@ public class admin extends JFrame {
 				sure = txt_sure.getText();
 				dinlenme = txt_dinlenme.getText();
 				sanatci = txt_sanatci.getText();
-
-				// select sarki_id,sarki_adi,sarki_tarih,sarki_sure,sarki_dinlenme,tur_ad
-				// ,sanatci_ad,album_ad from sarki,tur,album,sanatci where
-				// sarki.tur_id=tur.tur_id and sarki.album_id=album.album_id and
-				// sarki.sanatci_id=sanatci.sanatci_id ORDER BY sarki_id;
 				sql_tur = "select tur_id from tur where tur_ad='" + tur + "'";
 				ResultSet myRs = baglanti.yap2(sql_tur);
 				myRs = baglanti.sorgula(sql_tur);
@@ -237,7 +231,6 @@ public class admin extends JFrame {
 				sure = txt_sure.getText();
 				dinlenme = txt_dinlenme.getText();
 				sanatci = txt_sanatci.getText();
-
 				sql_tur = "select tur_id from tur where tur_ad='" + tur + "'";
 				ResultSet myRs = baglanti.yap2(sql_tur);
 				myRs = baglanti.sorgula(sql_tur);
@@ -470,19 +463,12 @@ public class admin extends JFrame {
 				String id, ad, tarih, sanatci, tur, sql_sorgu, sql_tur, sql_sanatci;
 				int tur_id, sanatci_id;
 				String tur_ids = "";
-
 				String sanatci_ids = "";
-
 				id = txt_album_id.getText();
 				ad = txt_album_ad.getText();
 				sanatci = txt_album_sanatci.getText();
 				tarih = txt_album_tarih.getText();
 				tur = txt_album_tur.getText();
-
-				// select sarki_id,sarki_adi,sarki_tarih,sarki_sure,sarki_dinlenme,tur_ad
-				// ,sanatci_ad,album_ad from sarki,tur,album,sanatci where
-				// sarki.tur_id=tur.tur_id and sarki.album_id=album.album_id and
-				// sarki.sanatci_id=sanatci.sanatci_id ORDER BY sarki_id;
 				sql_tur = "select tur_id from tur where tur_ad='" + tur + "'";
 				ResultSet myRs = baglanti.yap2(sql_tur);
 				myRs = baglanti.sorgula(sql_tur);
@@ -590,11 +576,6 @@ public class admin extends JFrame {
 				id = txt_sanatci_id.getText();
 				ad = txt_sanatci_ad.getText();
 				ulke = txt_sanatci_ulke.getText();
-
-				// select sarki_id,sarki_adi,sarki_tarih,sarki_sure,sarki_dinlenme,tur_ad
-				// ,sanatci_ad,album_ad from sarki,tur,album,sanatci where
-				// sarki.tur_id=tur.tur_id and sarki.album_id=album.album_id and
-				// sarki.sanatci_id=sanatci.sanatci_id ORDER BY sarki_id;
 				sql_tur = "select ulke_id from ulke where ulke_ad='" + ulke + "'";
 				ResultSet myRs = baglanti.yap2(sql_tur);
 				myRs = baglanti.sorgula1(sql_tur);
