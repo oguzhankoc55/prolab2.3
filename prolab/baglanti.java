@@ -1,4 +1,4 @@
-package deneme;
+package prolab;
 
 import java.sql.*;
 
@@ -15,24 +15,20 @@ public class baglanti {
 			"select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sanatci,sarki,album,tur where sarki.tur_id =tur.tur_id and sarki.album_id=album.album_id and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC LIMIT 10",
 			"select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sanatci,sarki,album,tur where sarki.tur_id =tur.tur_id and sarki.album_id=album.album_id and sarki.tur_id=2  and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC LIMIT 10",
 			"select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sanatci,sarki,album,tur where sarki.tur_id =tur.tur_id and sarki.album_id=album.album_id and sarki.tur_id=1  and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC LIMIT 10",
-			"select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sanatci,sarki,album,tur where sarki.tur_id =tur.tur_id and sarki.album_id=album.album_id and sarki.tur_id=3  and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC LIMIT 10"
-
-	};
+			"select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sanatci,sarki,album,tur where sarki.tur_id =tur.tur_id and sarki.album_id=album.album_id and sarki.tur_id=3  and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC LIMIT 10",
+			"select kul_id,kul_ad,kul_uyelik,kul_email,kul_sifre,ulke from kullanici,kullanici_islem where kullanici.kul_uyelik_id=kullanici_islem.kul_uyelik_id" };
 
 	static ResultSet sorgulama_1(String metin) {
 		String s = "select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sarki,liste_islem,tur,sanatci,album where liste_islem.liste_id = '"
 				+ metin
 				+ "' and sarki.sarki_id = liste_islem.sarki_id and sarki.tur_id=tur.tur_id and album.album_id=sarki.album_id and sanatci.sanatci_id=sarki.sanatci_id ORDER BY sarki_id";
 		ResultSet myRs = yap3(s);
-		System.out.println(s);
 		return myRs;
 	};
 
 	static ResultSet sorgulama_2(String metin) {
 		String s = "select liste_id,kul_ad,tur_ad from liste,kullanici,tur  where liste.kullanici_id= '" + metin
 				+ "' and kullanici.kul_id= '" + metin + "'  and liste.tur_id = tur.tur_id  ORDER BY liste_id";
-		System.out.println(metin);
-		System.out.println(s);
 		ResultSet myRs = yap3(s);
 		return myRs;
 	};
@@ -40,8 +36,6 @@ public class baglanti {
 	static ResultSet sorgulama_3(String metin, String metin1) {
 		String s = " select liste_id from liste where liste.kullanici_id='" + metin + "' and liste.tur_id='" + metin1
 				+ "'";
-		System.out.println(metin);
-		System.out.println(s);
 		ResultSet myRs = yap3(s);
 		return myRs;
 	};
@@ -51,7 +45,6 @@ public class baglanti {
 		String s = "select kul_id,kul_ad from kullanici where kul_id IN (select takip_edilen_id from takip where takip_eden_id='"
 				+ sorgu + "')";
 
-		System.out.println(s);
 		ResultSet myRs = yap3(s);
 		return myRs;
 	};
@@ -61,7 +54,6 @@ public class baglanti {
 		String s = "select liste_id,kul_ad,tur_ad from liste,kullanici,tur where liste.kullanici_id='" + sorgu
 				+ "' and liste.kullanici_id=kullanici.kul_id and liste.tur_id=tur.tur_id";
 
-		System.out.println(s);
 		ResultSet myRs = yap3(s);
 		return myRs;
 	};
@@ -69,7 +61,6 @@ public class baglanti {
 	static ResultSet sorgulama_6(String metin) {
 		String s = "select sarki_dinlenme from sarki where sarki_id ='" + metin + "' ";
 		ResultSet myRs = yap3(s);
-		System.out.println(s);
 		return myRs;
 	};
 
@@ -77,18 +68,14 @@ public class baglanti {
 		String s = "select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sanatci,sarki,album,tur where sarki.tur_id =tur.tur_id and sarki.album_id=album.album_id and sanatci.ulke_id='"
 				+ metin + "' and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC";
 		ResultSet myRs = yap3(s);
-		System.out.println(s);
 		return myRs;
 	};
 
 	static ResultSet sorgulama_8(String sorgu) {
 
-		// select kul_id,kullanici.kul_ad from takip,kullanici where
-		// takip.takip_eden_id=1 and takip.takip_edilen_id=kullanici.kul_id;
 		String s = "select kul_id,kul_ad from kullanici where kul_id IN (select takip_eden_id from takip where takip_edilen_id='"
 				+ sorgu + "')";
 
-		System.out.println(s);
 		ResultSet myRs = yap3(s);
 		return myRs;
 	};
@@ -96,21 +83,18 @@ public class baglanti {
 	static ResultSet sorgulama_9(String metin) {
 		String s = "select kul_id,odenme from odenme where kul_id = '" + metin + "'";
 		ResultSet myRs = yap3(s);
-		System.out.println(s);
 		return myRs;
 	};
 
 	static ResultSet sorgulama_10(String metin) {
 		String s = "select sarki_id from liste_islem where liste_id='" + metin + "'";
 		ResultSet myRs = yap3(s);
-		System.out.println(s);
 		return myRs;
 	};
 
 	static ResultSet sorgulama_11(String metin) {
 		String s = "select tur_id from liste where liste_id='" + metin + "'";
 		ResultSet myRs = yap3(s);
-		System.out.println(s);
 		return myRs;
 	};
 

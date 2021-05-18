@@ -1,4 +1,4 @@
-package deneme;
+package prolab;
 
 import java.awt.EventQueue;
 

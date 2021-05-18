@@ -1,4 +1,4 @@
-package deneme;
+package prolab;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -211,7 +211,6 @@ public class kullanici extends JFrame {
 					e2.printStackTrace();
 				}
 				table.setModel(modelim4);
-				// System.out.println(metin);
 
 			}
 		});
@@ -294,7 +293,6 @@ public class kullanici extends JFrame {
 
 				String sql_sorgu = "INSERT INTO liste_islem (liste_id,sarki_id) VALUES(" + liste_id + ",'" + sarki_id
 						+ "')";
-				System.out.println(sql_sorgu);
 
 				baglanti.ekle(sql_sorgu);
 
@@ -312,7 +310,6 @@ public class kullanici extends JFrame {
 
 				String sql_sorgu = "INSERT INTO takip (takip_eden_id,takip_edilen_id) VALUES(" + kullanici_id + ",'"
 						+ metin1 + "')";
-				System.out.println(sql_sorgu);
 
 				baglanti.ekle(sql_sorgu);
 
@@ -348,7 +345,6 @@ public class kullanici extends JFrame {
 					e2.printStackTrace();
 				}
 				table.setModel(modelim3);
-				System.out.println(giris.k_id);
 
 			}
 		});
@@ -364,7 +360,6 @@ public class kullanici extends JFrame {
 
 				String sql_sorgu = "DELETE FROM takip WHERE takip.takip_eden_id='" + kullanici_id
 						+ "' and takip.takip_edilen_id='" + metin2 + "'";
-				System.out.println(sql_sorgu);
 
 				baglanti.sil(sql_sorgu);
 
@@ -397,7 +392,6 @@ public class kullanici extends JFrame {
 					e2.printStackTrace();
 				}
 				table.setModel(modelim2);
-				// System.out.println(metin);
 
 			}
 		});
@@ -424,8 +418,6 @@ public class kullanici extends JFrame {
 				dinlenme += 1;
 				String dinl = Integer.toString(dinlenme);
 				String sql_sorgu = "UPDATE sarki SET sarki_dinlenme='" + dinl + "' WHERE sarki_id='" + sarki_id + "'";
-
-				// System.out.println(sql_sorgu);
 
 				baglanti.update(sql_sorgu);
 
@@ -664,21 +656,15 @@ public class kullanici extends JFrame {
 
 				}
 				if (sayac == 3) {
-					// metin1=modelim3.getValueAt(table.getSelectedRow(),0).toString();
-					metin = modelim2.getValueAt(table.getSelectedRow(), 0).toString();// Kullanici_id
+					metin = modelim2.getValueAt(table.getSelectedRow(), 0).toString();
 
 				}
 				if (sayac == 4) {
-					metin2 = modelim3.getValueAt(table.getSelectedRow(), 0).toString();// Takipten çýkramak premium
-																						// kullanýcý_id alýnýr//takip
-																						// eeiklerimden
+					metin2 = modelim3.getValueAt(table.getSelectedRow(), 0).toString();
 
 				}
 				if (sayac == 5) {
-					metin1 = modelim4.getValueAt(table.getSelectedRow(), 0).toString();// Takip edilen premium
-																						// kullanýcý_id alýnýr//premium
-																						// kullanicilardan
-
+					metin1 = modelim4.getValueAt(table.getSelectedRow(), 0).toString();
 				}
 				if (sayac == 6) {
 
