@@ -20,13 +20,10 @@ public class giris extends JFrame {
 	private JPanel contentPane;
 	private JTextField txt_ad;
 	private JTextField txt_sifre;
-	static String ad,sifre,k_id,adres="C:\\Users\\Oðuzhan Koç\\OneDrive\\Masaüstü\\prolab\\src\\beyaz.jpg";
-	
+	static String ad, sifre, k_id, adres = "C:\\Users\\Oðuzhan Koç\\OneDrive\\Masaüstü\\prolab\\src\\beyaz.jpg";
+
 	static int tur, sayac = 0;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -90,7 +87,7 @@ public class giris extends JFrame {
 
 		admin_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sayac++;
+				sayac = 1;
 				secin_lbl.setVisible(false);
 				admin_btn.setVisible(false);
 				kullanici_btn.setVisible(false);
@@ -135,23 +132,20 @@ public class giris extends JFrame {
 
 							tur = myRs.getInt("kul_uyelik_id");
 
-							if (sayac > 0) {
-								if (tur == 3) {
-									admin ekr = new admin();
-									ekr.setVisible(true);
-									setVisible(false);
-
-								}
-
-							}
-
-							else {
-								kullanici ekr = new kullanici();
+							if (tur == 3 && sayac == 1) {
+								admin ekr = new admin();
 								ekr.setVisible(true);
 								setVisible(false);
 
+							} else if (tur != 3 && sayac == 0) {
+								kullanici ekr = new kullanici();
+								ekr.setVisible(true);
+								setVisible(false);
 							}
-							giris_btn.setText("hatalý giriþ");
+
+							else {
+								giris_btn.setText("hatalý giriþ");
+							}
 
 						}
 
@@ -165,11 +159,10 @@ public class giris extends JFrame {
 		});
 		giris_btn.setBounds(140, 206, 97, 25);
 		contentPane.add(giris_btn);
-		
+
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(adres));
-	
-		
+
 		lblNewLabel.setBounds(0, 0, 434, 261);
 		contentPane.add(lblNewLabel);
 

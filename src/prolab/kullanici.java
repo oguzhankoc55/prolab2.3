@@ -443,7 +443,7 @@ public class kullanici extends JFrame {
 
 			}
 		});
-		btn_dinle.setBounds(22, 127, 150, 50);
+		btn_dinle.setBounds(22, 247, 150, 50);
 		contentPane.add(btn_dinle);
 
 		JButton btn_ulke = new JButton("ulkeler");
@@ -600,7 +600,7 @@ public class kullanici extends JFrame {
 
 			}
 		});
-		btn_odeme_kontrol.setBounds(22, 188, 150, 50);
+		btn_odeme_kontrol.setBounds(22, 125, 150, 50);
 		contentPane.add(btn_odeme_kontrol);
 
 		btn_odeme_yap.addActionListener(new ActionListener() {
@@ -614,7 +614,7 @@ public class kullanici extends JFrame {
 
 			}
 		});
-		btn_odeme_yap.setBounds(22, 249, 150, 50);
+		btn_odeme_yap.setBounds(22, 186, 150, 50);
 		contentPane.add(btn_odeme_yap);
 
 		JButton btn_tumunu_ekle = new JButton("tumunu_ekle");

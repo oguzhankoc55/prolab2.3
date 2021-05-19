@@ -125,8 +125,6 @@ public class baglanti {
 			String db = "jdbc:mysql://localhost/prolab";
 			Class.forName(myDriver);
 			conn = DriverManager.getConnection(db, "root", "1234");
-
-			System.out.println(sql_sorgu);
 			st = conn.createStatement();
 			myRs = st.executeQuery(sql_sorgu);
 		}
