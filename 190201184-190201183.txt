@@ -1,0 +1,2110 @@
+package deneme1;
+
+import java.sql.*;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.util.ArrayList;
+
+class baglanti {
+	static Connection conn;
+	static Statement st;
+
+	static String[] arama_komutları = {
+			"select sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sarki,tur,album,sanatci  where sarki.tur_id=tur.tur_id and sarki.album_id=album.album_id and sarki.sanatci_id=sanatci.sanatci_id ORDER BY sarki_id",
+			"select album_id,album_ad,sanatci_ad,tarih,tur_ad from tur,album,sanatci  where album.tur_id=tur.tur_id and album.sanatci_id=sanatci.sanatci_id ORDER BY album_id",
+			"select sanatci_id,sanatci_ad,ulke_ad from sanatci,ulke  where sanatci.ulke_id=ulke.ulke_id  ORDER BY sanatci_id",
+			"select kul_id,kul_ad from kullanici  where kullanici.kul_uyelik_id=2 ORDER BY kul_id",
+			"select ulke_id,ulke_ad from ulke",
+			"select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sanatci,sarki,album,tur where sarki.tur_id =tur.tur_id and sarki.album_id=album.album_id and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC LIMIT 10",
+			"select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sanatci,sarki,album,tur where sarki.tur_id =tur.tur_id and sarki.album_id=album.album_id and sarki.tur_id=2  and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC LIMIT 10",
+			"select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sanatci,sarki,album,tur where sarki.tur_id =tur.tur_id and sarki.album_id=album.album_id and sarki.tur_id=1  and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC LIMIT 10",
+			"select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sanatci,sarki,album,tur where sarki.tur_id =tur.tur_id and sarki.album_id=album.album_id and sarki.tur_id=3  and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC LIMIT 10",
+			"select kul_id,kul_ad,kul_uyelik,kul_email,kul_sifre,ulke from kullanici,kullanici_islem where kullanici.kul_uyelik_id=kullanici_islem.kul_uyelik_id" };
+
+	static ResultSet sorgulama_1(String metin) {
+		String s = "select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sarki,liste_islem,tur,sanatci,album where liste_islem.liste_id = '"
+				+ metin
+				+ "' and sarki.sarki_id = liste_islem.sarki_id and sarki.tur_id=tur.tur_id and album.album_id=sarki.album_id and sanatci.sanatci_id=sarki.sanatci_id ORDER BY sarki_id";
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+
+	static ResultSet sorgulama_2(String metin) {
+		String s = "select liste_id,kul_ad,tur_ad from liste,kullanici,tur  where liste.kullanici_id= '" + metin
+				+ "' and kullanici.kul_id= '" + metin + "'  and liste.tur_id = tur.tur_id  ORDER BY liste_id";
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+
+	static ResultSet sorgulama_3(String metin, String metin1) {
+		String s = " select liste_id from liste where liste.kullanici_id='" + metin + "' and liste.tur_id='" + metin1
+				+ "'";
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+
+	static ResultSet sorgulama_4(String sorgu) {
+
+		String s = "select kul_id,kul_ad from kullanici where kul_id IN (select takip_edilen_id from takip where takip_eden_id='"
+				+ sorgu + "')";
+
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+
+	static ResultSet sorgulama_5(String sorgu) {
+
+		String s = "select liste_id,kul_ad,tur_ad from liste,kullanici,tur where liste.kullanici_id='" + sorgu
+				+ "' and liste.kullanici_id=kullanici.kul_id and liste.tur_id=tur.tur_id";
+
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+
+	static ResultSet sorgulama_6(String metin) {
+		String s = "select sarki_dinlenme from sarki where sarki_id ='" + metin + "' ";
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+
+	static ResultSet sorgulama_7(String metin) {
+		String s = "select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sanatci,sarki,album,tur where sarki.tur_id =tur.tur_id and sarki.album_id=album.album_id and sanatci.ulke_id='"
+				+ metin + "' and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC LIMIT 10";
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+
+	static ResultSet sorgulama_8(String sorgu) {
+
+		String s = "select kul_id,kul_ad from kullanici where kul_id IN (select takip_eden_id from takip where takip_edilen_id='"
+				+ sorgu + "')";
+
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+
+	static ResultSet sorgulama_9(String metin) {
+		String s = "select kul_id,odenme from odenme where kul_id = '" + metin + "'";
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+
+	static ResultSet sorgulama_10(String metin) {
+		String s = "select sarki_id from liste_islem where liste_id='" + metin + "'";
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+
+	static ResultSet sorgulama_11(String metin) {
+		String s = "select tur_id from liste where liste_id='" + metin + "'";
+		ResultSet myRs = yap3(s);
+		return myRs;
+	};
+
+	static ResultSet yap(int sira) {
+		ResultSet myRs = null;
+		try {
+			String myDriver = "com.mysql.jdbc.Driver";
+			String db = "jdbc:mysql://localhost/prolab";
+			Class.forName(myDriver);
+			conn = DriverManager.getConnection(db, "root", "1234");
+			String sorgu = arama_komutları[sira];
+
+			st = conn.createStatement();
+			myRs = st.executeQuery(sorgu);
+		}
+
+		catch (Exception a) {
+			System.err.println("Hata ! ");
+			System.err.println(a.getMessage());
+		}
+		return myRs;
+	}
+
+	static ResultSet yap2(String sql_sorgu) {
+		ResultSet myRs = null;
+		try {
+			String myDriver = "com.mysql.jdbc.Driver";
+			String db = "jdbc:mysql://localhost/prolab";
+			Class.forName(myDriver);
+			conn = DriverManager.getConnection(db, "root", "1234");
+			st = conn.createStatement();
+			myRs = st.executeQuery(sql_sorgu);
+		}
+
+		catch (Exception a) {
+			System.err.println("Hata ! ");
+			System.err.println(a.getMessage());
+		}
+		return myRs;
+	}
+
+	static ResultSet yap3(String s) {
+		ResultSet myRs = null;
+		try {
+			String myDriver = "com.mysql.jdbc.Driver";
+			String db = "jdbc:mysql://localhost/prolab";
+			Class.forName(myDriver);
+			conn = DriverManager.getConnection(db, "root", "1234");
+			String sorgu = s;
+			st = conn.createStatement();
+			myRs = st.executeQuery(sorgu);
+		}
+
+		catch (Exception a) {
+			System.err.println("Hata ! ");
+			System.err.println(a.getMessage());
+		}
+		return myRs;
+	}
+
+	static void ekle(String sql_sorgu) {
+		try {
+			st.executeUpdate(sql_sorgu);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	static void update(String sql_sorgu) {
+		try {
+			st.executeUpdate(sql_sorgu);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	static void sil(String sql_sorgu) {
+		try {
+			st.executeUpdate(sql_sorgu);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	static ResultSet sorgula(String sql_sorgu) {
+		ResultSet myRs = null;
+		try {
+			myRs = st.executeQuery(sql_sorgu);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return myRs;
+	}
+
+	static ResultSet sorgula1(String sql_sorgu) {
+		ResultSet myRs = null;
+		try {
+			myRs = st.executeQuery(sql_sorgu);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return myRs;
+	}
+
+}
+
+public class giris extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField txt_ad;
+	private JTextField txt_sifre;
+	static String ad, sifre, k_id, adres = "C:\\Users\\Arslan\\Desktop\\prolab2.3\\src\\beyaz.jpg";
+
+	static int tur, sayac = 0;
+
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					giris frame = new giris();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public giris() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel ad_lbl = new JLabel("Kullan\u0131c\u0131 ad\u0131");
+		ad_lbl.setBounds(56, 106, 70, 16);
+		contentPane.add(ad_lbl);
+
+		JLabel sifre_lbl = new JLabel("\u015Eifre");
+		sifre_lbl.setBounds(56, 152, 56, 16);
+		contentPane.add(sifre_lbl);
+
+		txt_ad = new JTextField();
+		txt_ad.setBounds(140, 103, 116, 22);
+		contentPane.add(txt_ad);
+		txt_ad.setColumns(10);
+
+		txt_sifre = new JTextField();
+		txt_sifre.setBounds(140, 149, 116, 22);
+		contentPane.add(txt_sifre);
+		txt_sifre.setColumns(10);
+
+		JButton admin_btn = new JButton("Admin");
+		admin_btn.setBounds(68, 55, 89, 39);
+		contentPane.add(admin_btn);
+
+		JButton kullanici_btn = new JButton("Kullanici");
+		kullanici_btn.setBounds(221, 55, 89, 37);
+		contentPane.add(kullanici_btn);
+
+		JLabel secin_lbl = new JLabel("Kullanici se\u00E7iniz");
+		secin_lbl.setBounds(148, 0, 104, 39);
+		contentPane.add(secin_lbl);
+		JButton giris_btn = new JButton("giris");
+
+		giris_btn.setVisible(false);
+		txt_sifre.setVisible(false);
+		txt_ad.setVisible(false);
+		sifre_lbl.setVisible(false);
+		ad_lbl.setVisible(false);
+
+		admin_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sayac = 1;
+				secin_lbl.setVisible(false);
+				admin_btn.setVisible(false);
+				kullanici_btn.setVisible(false);
+				giris_btn.setVisible(true);
+				txt_sifre.setVisible(true);
+				txt_ad.setVisible(true);
+				sifre_lbl.setVisible(true);
+				ad_lbl.setVisible(true);
+
+			}
+		});
+		kullanici_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				secin_lbl.setVisible(false);
+				admin_btn.setVisible(false);
+				kullanici_btn.setVisible(false);
+				giris_btn.setVisible(true);
+				txt_sifre.setVisible(true);
+				txt_ad.setVisible(true);
+				sifre_lbl.setVisible(true);
+				ad_lbl.setVisible(true);
+
+			}
+		});
+		giris_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ad = txt_ad.getText();
+				sifre = txt_sifre.getText();
+
+				String sql_sorgu = "SELECT  count(kul_id) , kul_uyelik_id FROM kullanici WHERE kul_ad='" + ad
+						+ "' and kul_sifre='" + sifre + "'";
+
+				ResultSet myRs = baglanti.yap(0);
+				myRs = baglanti.sorgula(sql_sorgu);
+
+				try {
+
+					while (myRs.next()) {
+
+						if (myRs.getInt("count(kul_id)") == 1) {
+
+							tur = myRs.getInt("kul_uyelik_id");
+
+							if (tur == 3 && sayac == 1) {
+								admin ekr = new admin();
+								ekr.setVisible(true);
+								setVisible(false);
+
+							} else if (tur != 3 && sayac == 0) {
+								kullanici ekr = new kullanici();
+								ekr.setVisible(true);
+								setVisible(false);
+							}
+
+							else {
+								giris_btn.setText("hatalı giriş");
+							}
+
+						}
+
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
+		giris_btn.setBounds(140, 206, 97, 25);
+		contentPane.add(giris_btn);
+
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(adres));
+
+		lblNewLabel.setBounds(0, 0, 434, 261);
+		contentPane.add(lblNewLabel);
+
+	}
+}
+
+class admin extends JFrame {
+
+	private JPanel contentPane;
+	DefaultTableModel modelim = new DefaultTableModel();
+	Object[] kolonlar = { "Id", "Ad", "Tarih", "Tur", "Sure", "Dinlenme", "Album", "Sanatci" };
+	Object[] satirlar = new Object[8];
+	DefaultTableModel modelim1 = new DefaultTableModel();
+	Object[] kolonlar1 = { "Id", "Album Ad", "Sanatci", "Tarih", "Tur" };
+	Object[] satirlar1 = new Object[5];
+	DefaultTableModel modelim2 = new DefaultTableModel();
+	Object[] kolonlar2 = { "Id", "Sanatci Ad", "Ulke" };
+	Object[] satirlar2 = new Object[3];
+	DefaultTableModel modelim3 = new DefaultTableModel();
+	Object[] kolonlar3 = { "Id", "Kullanici Ad", "Kul uyelik tur", "eposta", "Sifre", "Ulke" };
+	Object[] satirlar3 = new Object[6];
+	private JTable table;
+	private JTextField txt_id;
+	private JTextField txt_ad;
+	private JTextField txt_tarih;
+	private JTextField txt_album;
+	private JTextField txt_tur;
+	private JTextField txt_sure;
+	private JTextField txt_dinlenme;
+	private JTextField txt_sanatci;
+	private JTable table_1;
+	private JTable table_2;
+	private JTextField txt_album_id;
+	private JTextField txt_album_ad;
+	private JTextField txt_album_sanatci;
+	private JTextField txt_album_tarih;
+	private JTextField txt_album_tur;
+	private JTextField txt_sanatci_id;
+	private JTextField txt_sanatci_ad;
+	private JTextField txt_sanatci_ulke;
+	static int sayac = 0;
+	private JTextField text_kul_id;
+	private JTextField text_kul_ad;
+	private JTextField text_kul_uyelik;
+	private JTextField textField_4;
+	private JTextField textField_5;
+	private JTextField textField_6;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					admin frame = new admin();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public admin() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(0, 0, 1361, 720);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JScrollPane scrollPane = new JScrollPane();
+
+		scrollPane.setBounds(20, 97, 602, 573);
+		contentPane.add(scrollPane);
+
+		table = new JTable();
+
+		table.setBounds(158, 219, 256, 123);
+		scrollPane.setViewportView(table);
+
+		JButton btnListele = new JButton("Sarki Listele");
+		btnListele.setBackground(new Color(147, 112, 219));
+		btnListele.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sayac = 1;
+
+				modelim.setColumnIdentifiers(kolonlar);
+				modelim.setRowCount(0);
+				ResultSet myRs = baglanti.yap(0);
+
+				try {
+					while (myRs.next()) {
+						satirlar[0] = myRs.getString("sarki_id");
+						satirlar[1] = myRs.getString("sarki_adi");
+						satirlar[2] = myRs.getString("sarki_tarih");
+						satirlar[3] = myRs.getString("tur_ad");
+						satirlar[4] = myRs.getString("sarki_sure");
+						satirlar[5] = myRs.getString("sarki_dinlenme");
+
+						satirlar[6] = myRs.getString("album_ad");
+						satirlar[7] = myRs.getString("sanatci_ad");
+
+						modelim.addRow(satirlar);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim);
+			}
+		});
+		btnListele.setBounds(20, 8, 150, 50);
+		contentPane.add(btnListele);
+
+		txt_id = new JTextField();
+		txt_id.setBounds(690, 53, 86, 20);
+		contentPane.add(txt_id);
+		txt_id.setColumns(10);
+
+		txt_ad = new JTextField();
+		txt_ad.setBounds(690, 84, 86, 20);
+		contentPane.add(txt_ad);
+		txt_ad.setColumns(10);
+
+		txt_tarih = new JTextField();
+		txt_tarih.setBounds(690, 115, 86, 20);
+		contentPane.add(txt_tarih);
+		txt_tarih.setColumns(10);
+
+		txt_album = new JTextField();
+		txt_album.setBounds(690, 227, 86, 20);
+		contentPane.add(txt_album);
+		txt_album.setColumns(10);
+
+		JButton btnKaydet = new JButton("Kaydet");
+		btnKaydet.setBackground(Color.CYAN);
+		btnKaydet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String id, ad, tarih, sanatci, album, tur, sure, dinlenme, sql_sorgu, sql_tur, sql_album, sql_sanatci;
+				int tur_id, album_id, sanatci_id;
+				String tur_ids = "";
+				String album_ids = "";
+				String sanatci_ids = "";
+
+				id = txt_id.getText();
+				ad = txt_ad.getText();
+				tarih = txt_tarih.getText();
+				album = txt_album.getText();
+				tur = txt_tur.getText();
+				sure = txt_sure.getText();
+				dinlenme = txt_dinlenme.getText();
+				sanatci = txt_sanatci.getText();
+
+				sql_tur = "select tur_id from tur where tur_ad='" + tur + "'";
+				ResultSet myRs = baglanti.yap2(sql_tur);
+				myRs = baglanti.sorgula(sql_tur);
+				try {
+					while (myRs.next()) {
+						tur_id = myRs.getInt("tur_id");
+						tur_ids = String.valueOf(tur_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				sql_album = "select album_id from album where album_ad='" + album + "'";
+				ResultSet myRs1 = baglanti.yap2(sql_album);
+				myRs1 = baglanti.sorgula(sql_album);
+				try {
+					while (myRs1.next()) {
+						album_id = myRs1.getInt("album_id");
+						album_ids = String.valueOf(album_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				sql_sanatci = "select sanatci_id from sanatci where sanatci_ad='" + sanatci + "'";
+				ResultSet myRs2 = baglanti.yap2(sql_sanatci);
+				myRs2 = baglanti.sorgula(sql_sanatci);
+				try {
+					while (myRs2.next()) {
+						sanatci_id = myRs2.getInt("sanatci_id");
+						sanatci_ids = String.valueOf(sanatci_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				sql_sorgu = "INSERT INTO sarki (sarki_id,sarki_adi,sarki_tarih,tur_id,sarki_sure,sarki_dinlenme,album_id,sanatci_id) VALUES("
+						+ id + ",'" + ad + "'," + "'" + tarih + "','" + tur_ids + "','" + sure + "','" + dinlenme
+						+ "','" + album_ids + "','" + sanatci_ids + "')";
+
+				baglanti.ekle(sql_sorgu);
+
+			}
+		});
+		btnKaydet.setBounds(632, 327, 89, 23);
+		contentPane.add(btnKaydet);
+
+		JLabel lbl_Id = new JLabel("Id");
+		lbl_Id.setBounds(644, 56, 46, 14);
+		contentPane.add(lbl_Id);
+
+		JLabel lbl_ad = new JLabel("Ad");
+		lbl_ad.setBounds(644, 87, 46, 14);
+		contentPane.add(lbl_ad);
+
+		JLabel lbl_tarih = new JLabel("Tarih");
+		lbl_tarih.setBounds(644, 118, 46, 14);
+		contentPane.add(lbl_tarih);
+
+		JLabel lbl_sanatci = new JLabel("Sanatci");
+		lbl_sanatci.setBounds(644, 255, 46, 25);
+		contentPane.add(lbl_sanatci);
+
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.setBackground(Color.GREEN);
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String id, ad, tarih, sanatci, album, tur, sure, dinlenme, sql_sorgu, sql_tur, sql_album, sql_sanatci;
+				int tur_id, album_id, sanatci_id;
+				String tur_ids = "";
+				String album_ids = "";
+				String sanatci_ids = "";
+				id = txt_id.getText();
+				ad = txt_ad.getText();
+				tarih = txt_tarih.getText();
+				album = txt_album.getText();
+				tur = txt_tur.getText();
+				sure = txt_sure.getText();
+				dinlenme = txt_dinlenme.getText();
+				sanatci = txt_sanatci.getText();
+
+				sql_tur = "select tur_id from tur where tur_ad='" + tur + "'";
+				ResultSet myRs = baglanti.yap2(sql_tur);
+				myRs = baglanti.sorgula(sql_tur);
+				try {
+					while (myRs.next()) {
+						tur_id = myRs.getInt("tur_id");
+						tur_ids = String.valueOf(tur_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				sql_album = "select album_id from album where album_ad='" + album + "'";
+				ResultSet myRs1 = baglanti.yap2(sql_album);
+				myRs1 = baglanti.sorgula(sql_album);
+				try {
+					while (myRs1.next()) {
+						album_id = myRs1.getInt("album_id");
+						album_ids = String.valueOf(album_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				sql_sanatci = "select sanatci_id from sanatci where sanatci_ad='" + sanatci + "'";
+				ResultSet myRs2 = baglanti.yap2(sql_sanatci);
+				myRs2 = baglanti.sorgula(sql_sanatci);
+				try {
+					while (myRs2.next()) {
+						sanatci_id = myRs2.getInt("sanatci_id");
+						sanatci_ids = String.valueOf(sanatci_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				sql_sorgu = "UPDATE sarki SET sarki_id=" + id + "," + "sarki_adi='" + ad + "',sarki_tarih='" + tarih
+						+ "',tur_id='" + tur_ids + "',sarki_sure='" + sure + "',sarki_dinlenme='" + dinlenme
+						+ "',album_id='" + album_ids + "',sanatci_id='" + sanatci_ids + "' WHERE sarki_id=" + id;
+
+				baglanti.update(sql_sorgu);
+
+			}
+		});
+		btnUpdate.setBounds(731, 327, 89, 23);
+		contentPane.add(btnUpdate);
+
+		JButton btnSil = new JButton("Sil");
+		btnSil.setForeground(Color.WHITE);
+		btnSil.setBackground(Color.RED);
+		btnSil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String id, sql_sorgu;
+				id = txt_id.getText();
+				sql_sorgu = "DELETE FROM sarki WHERE sarki_id=" + id;
+				baglanti.sil(sql_sorgu);
+			}
+		});
+		btnSil.setBounds(687, 361, 89, 23);
+		contentPane.add(btnSil);
+
+		JLabel lblNewLabel = new JLabel("Alan:");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel.setBounds(756, 8, 97, 25);
+		contentPane.add(lblNewLabel);
+
+		contentPane.add(lblNewLabel);
+		lblNewLabel.setText(giris.ad);
+
+		JLabel lbl_album1 = new JLabel("Album");
+		lbl_album1.setHorizontalAlignment(SwingConstants.TRAILING);
+		lbl_album1.setBounds(632, 229, 41, 17);
+		contentPane.add(lbl_album1);
+
+		JLabel lbl_tur = new JLabel("Tur");
+		lbl_tur.setBounds(644, 146, 46, 20);
+		contentPane.add(lbl_tur);
+
+		JLabel lbl_sure = new JLabel("Sure");
+		lbl_sure.setBounds(644, 177, 46, 14);
+		contentPane.add(lbl_sure);
+
+		JLabel lbl_dinlenme = new JLabel("Dinlenme");
+		lbl_dinlenme.setBounds(644, 202, 46, 19);
+		contentPane.add(lbl_dinlenme);
+
+		txt_tur = new JTextField();
+		txt_tur.setBounds(690, 146, 86, 20);
+		contentPane.add(txt_tur);
+		txt_tur.setColumns(10);
+
+		txt_sure = new JTextField();
+		txt_sure.setBounds(690, 174, 86, 20);
+		contentPane.add(txt_sure);
+		txt_sure.setColumns(10);
+
+		txt_dinlenme = new JTextField();
+		txt_dinlenme.setBounds(690, 201, 86, 20);
+		contentPane.add(txt_dinlenme);
+		txt_dinlenme.setColumns(10);
+
+		txt_sanatci = new JTextField();
+		txt_sanatci.setBounds(690, 257, 86, 20);
+		contentPane.add(txt_sanatci);
+		txt_sanatci.setColumns(10);
+
+		JButton btnAlbumListele = new JButton("Album Listele");
+		btnAlbumListele.setBackground(new Color(147, 112, 219));
+		btnAlbumListele.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				sayac = 2;
+
+				modelim1.setColumnIdentifiers(kolonlar1);
+				modelim1.setRowCount(0);
+				ResultSet myRs = baglanti.yap(1);
+
+				try {
+					while (myRs.next()) {
+						satirlar1[0] = myRs.getString("album_id");
+						satirlar1[1] = myRs.getString("album_ad");
+						satirlar1[2] = myRs.getString("sanatci_ad");
+						satirlar1[3] = myRs.getString("tarih");
+						satirlar1[4] = myRs.getString("tur_ad");
+
+						modelim1.addRow(satirlar1);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim1);
+
+			}
+		});
+		btnAlbumListele.setBounds(170, 8, 150, 50);
+		contentPane.add(btnAlbumListele);
+
+		table_2 = new JTable();
+		table_2.setBounds(0, 0, 600, 1);
+		contentPane.add(table_2);
+
+		JButton btnListele_3 = new JButton("Sarkici Listele");
+		btnListele_3.setBackground(new Color(147, 112, 219));
+		btnListele_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				sayac = 3;
+				modelim2.setColumnIdentifiers(kolonlar2);
+				modelim2.setRowCount(0);
+				ResultSet myRs = baglanti.yap(2);
+
+				try {
+					while (myRs.next()) {
+						satirlar2[0] = myRs.getString("sanatci_id");
+						satirlar2[1] = myRs.getString("sanatci_ad");
+						satirlar2[2] = myRs.getString("ulke_ad");
+						modelim2.addRow(satirlar2);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim2);
+
+			}
+		});
+		btnListele_3.setBounds(320, 8, 150, 50);
+		contentPane.add(btnListele_3);
+
+		table_1 = new JTable();
+		table_1.setBounds(0, 0, 600, 1);
+		contentPane.add(table_1);
+
+		JLabel lblNewLabel_1 = new JLabel("Sarki Ozellikleri");
+		lblNewLabel_1.setBounds(644, 33, 127, 14);
+		contentPane.add(lblNewLabel_1);
+
+		JLabel lbl_albumid = new JLabel("Id");
+		lbl_albumid.setBounds(849, 56, 46, 14);
+		contentPane.add(lbl_albumid);
+
+		txt_album_id = new JTextField();
+		txt_album_id.setBounds(902, 53, 86, 20);
+		contentPane.add(txt_album_id);
+		txt_album_id.setColumns(10);
+
+		JLabel lbl_albumad = new JLabel("Ad");
+		lbl_albumad.setEnabled(true);
+		lbl_albumad.setBounds(849, 87, 46, 14);
+		contentPane.add(lbl_albumad);
+
+		txt_album_ad = new JTextField();
+		txt_album_ad.setText("");
+		txt_album_ad.setBounds(902, 84, 86, 20);
+		contentPane.add(txt_album_ad);
+		txt_album_ad.setColumns(10);
+
+		JLabel lbl_albumsanatci = new JLabel("Sanatci");
+		lbl_albumsanatci.setBounds(849, 118, 46, 14);
+		contentPane.add(lbl_albumsanatci);
+
+		txt_album_sanatci = new JTextField();
+		txt_album_sanatci.setText("");
+		txt_album_sanatci.setBounds(902, 115, 86, 20);
+		contentPane.add(txt_album_sanatci);
+		txt_album_sanatci.setColumns(10);
+
+		JLabel lbl_albumtarih = new JLabel("Tarih");
+		lbl_albumtarih.setBounds(849, 149, 46, 14);
+		contentPane.add(lbl_albumtarih);
+
+		txt_album_tarih = new JTextField();
+		txt_album_tarih.setText("");
+		txt_album_tarih.setBounds(902, 146, 86, 20);
+		contentPane.add(txt_album_tarih);
+		txt_album_tarih.setColumns(10);
+
+		JLabel lbl_albumtur = new JLabel("Tur");
+		lbl_albumtur.setBounds(849, 177, 46, 14);
+		contentPane.add(lbl_albumtur);
+
+		txt_album_tur = new JTextField();
+		txt_album_tur.setText("");
+		txt_album_tur.setBounds(902, 174, 86, 20);
+		contentPane.add(txt_album_tur);
+		txt_album_tur.setColumns(10);
+
+		JButton btnKaydet_1 = new JButton("Kaydet");
+		btnKaydet_1.setBackground(Color.CYAN);
+		btnKaydet_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String id, ad, tarih, sanatci, tur, sql_sorgu, sql_tur, sql_sanatci;
+				int tur_id, sanatci_id;
+				String tur_ids = "";
+
+				String sanatci_ids = "";
+
+				id = txt_album_id.getText();
+				ad = txt_album_ad.getText();
+				sanatci = txt_album_sanatci.getText();
+				tarih = txt_album_tarih.getText();
+				tur = txt_album_tur.getText();
+
+				sql_tur = "select tur_id from tur where tur_ad='" + tur + "'";
+				ResultSet myRs = baglanti.yap2(sql_tur);
+				myRs = baglanti.sorgula(sql_tur);
+				try {
+					while (myRs.next()) {
+						tur_id = myRs.getInt("tur_id");
+						tur_ids = String.valueOf(tur_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				sql_sanatci = "select sanatci_id from sanatci where sanatci_ad='" + sanatci + "'";
+				ResultSet myRs2 = baglanti.yap2(sql_sanatci);
+				myRs2 = baglanti.sorgula(sql_sanatci);
+				try {
+					while (myRs2.next()) {
+						sanatci_id = myRs2.getInt("sanatci_id");
+						sanatci_ids = String.valueOf(sanatci_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				sql_sorgu = "INSERT INTO album (album_id,album_ad,sanatci_id,tarih,tur_id) VALUES(" + id + ",'" + ad
+						+ "'," + "','" + sanatci_ids + "'" + tarih + "','" + tur_ids + "')";
+
+				baglanti.ekle(sql_sorgu);
+
+			}
+		});
+		btnKaydet_1.setBounds(849, 225, 89, 23);
+		contentPane.add(btnKaydet_1);
+
+		JButton btnUpdate_1 = new JButton("Update");
+		btnUpdate_1.setBackground(Color.GREEN);
+		btnUpdate_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String id, ad, tarih, sanatci, tur, sql_sorgu, sql_tur, sql_sanatci;
+				int tur_id, sanatci_id;
+				String tur_ids = "";
+				String sanatci_ids = "";
+				id = txt_album_id.getText();
+				ad = txt_album_ad.getText();
+				tarih = txt_album_tarih.getText();
+				tur = txt_album_tur.getText();
+				sanatci = txt_album_sanatci.getText();
+
+				sql_tur = "select tur_id from tur where tur_ad='" + tur + "'";
+				ResultSet myRs = baglanti.yap2(sql_tur);
+				myRs = baglanti.sorgula(sql_tur);
+				try {
+					while (myRs.next()) {
+						tur_id = myRs.getInt("tur_id");
+						tur_ids = String.valueOf(tur_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				sql_sanatci = "select sanatci_id from sanatci where sanatci_ad='" + sanatci + "'";
+				ResultSet myRs2 = baglanti.yap2(sql_sanatci);
+				myRs2 = baglanti.sorgula(sql_sanatci);
+				try {
+					while (myRs2.next()) {
+						sanatci_id = myRs2.getInt("sanatci_id");
+						sanatci_ids = String.valueOf(sanatci_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				sql_sorgu = "UPDATE album SET album_id=" + id + "," + "album_ad='" + ad + "',sanatci_id='" + sanatci_ids
+						+ "',tarih='" + tarih + "',tur_id='" + tur_ids + "' WHERE album_id=" + id;
+
+				baglanti.update(sql_sorgu);
+
+			}
+
+		});
+		btnUpdate_1.setBounds(948, 225, 89, 23);
+		contentPane.add(btnUpdate_1);
+
+		JButton btnSil_1 = new JButton("Sil");
+		btnSil_1.setForeground(Color.WHITE);
+		btnSil_1.setBackground(Color.RED);
+		btnSil_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String id, sql_sorgu;
+				id = txt_album_id.getText();
+				sql_sorgu = "DELETE FROM album WHERE album_id=" + id;
+				baglanti.sil(sql_sorgu);
+
+			}
+		});
+		btnSil_1.setBounds(902, 256, 89, 23);
+		contentPane.add(btnSil_1);
+
+		JButton btnKaydet_1_1 = new JButton("Kaydet");
+		btnKaydet_1_1.setBackground(Color.CYAN);
+		btnKaydet_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String id, ad, ulke, sql_sorgu, sql_tur;
+				int ulke_id;
+				String ulke_ids = "";
+
+				id = txt_sanatci_id.getText();
+				ad = txt_sanatci_ad.getText();
+				ulke = txt_sanatci_ulke.getText();
+
+				sql_tur = "select ulke_id from ulke where ulke_ad='" + ulke + "'";
+				ResultSet myRs = baglanti.yap2(sql_tur);
+				myRs = baglanti.sorgula1(sql_tur);
+				try {
+					while (myRs.next()) {
+						ulke_id = myRs.getInt("ulke_id");
+						ulke_ids = String.valueOf(ulke_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				sql_sorgu = "INSERT INTO sanatci (sanatci_id,sanatci_ad,ulke_id) VALUES(" + id + ",'" + ad + "','"
+						+ ulke_ids + "')";
+
+				baglanti.ekle(sql_sorgu);
+
+			}
+		});
+		btnKaydet_1_1.setBounds(651, 554, 89, 23);
+		contentPane.add(btnKaydet_1_1);
+
+		JButton btnUpdate_1_1 = new JButton("Update");
+		btnUpdate_1_1.setBackground(Color.GREEN);
+		btnUpdate_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String id, ad, ulke, sql_sorgu, sql_ulke;
+				int ulke_id;
+				String ulke_ids = "";
+				id = txt_sanatci_id.getText();
+				ad = txt_sanatci_ad.getText();
+				ulke = txt_sanatci_ulke.getText();
+
+				sql_ulke = "select ulke_id from ulke where ulke_ad='" + ulke + "'";
+				ResultSet myRs5 = baglanti.yap2(sql_ulke);
+				myRs5 = baglanti.sorgula1(sql_ulke);
+				try {
+					while (myRs5.next()) {
+						ulke_id = myRs5.getInt("ulke_id");
+						ulke_ids = String.valueOf(ulke_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				sql_sorgu = "UPDATE sanatci SET sanatci_id=" + id + "," + "sanatci_ad='" + ad + "',ulke_id='" + ulke_ids
+						+ "' WHERE sanatci_id=" + id;
+
+				baglanti.update(sql_sorgu);
+
+			}
+		});
+		btnUpdate_1_1.setBounds(764, 554, 89, 23);
+		contentPane.add(btnUpdate_1_1);
+
+		JButton btnSil_1_1 = new JButton("Sil");
+		btnSil_1_1.setForeground(Color.WHITE);
+		btnSil_1_1.setBackground(Color.RED);
+		btnSil_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String id, sql_sorgu;
+				id = txt_sanatci_id.getText();
+				sql_sorgu = "DELETE FROM sanatci WHERE sanatci_id=" + id;
+				baglanti.sil(sql_sorgu);
+
+			}
+		});
+		btnSil_1_1.setBounds(698, 596, 89, 23);
+		contentPane.add(btnSil_1_1);
+
+		JLabel lbl_sanatciid = new JLabel("Id");
+		lbl_sanatciid.setBounds(644, 448, 46, 14);
+		contentPane.add(lbl_sanatciid);
+
+		JLabel lbl_sanatciad = new JLabel("Ad");
+		lbl_sanatciad.setEnabled(true);
+		lbl_sanatciad.setBounds(644, 483, 46, 14);
+		contentPane.add(lbl_sanatciad);
+
+		JLabel lbl_sanatci_ulke = new JLabel("Ulke");
+		lbl_sanatci_ulke.setBounds(644, 519, 46, 14);
+		contentPane.add(lbl_sanatci_ulke);
+
+		txt_sanatci_id = new JTextField();
+		txt_sanatci_id.setColumns(10);
+		txt_sanatci_id.setBounds(690, 446, 86, 20);
+		contentPane.add(txt_sanatci_id);
+
+		txt_sanatci_ad = new JTextField();
+		txt_sanatci_ad.setText("");
+		txt_sanatci_ad.setColumns(10);
+		txt_sanatci_ad.setBounds(690, 481, 86, 20);
+		contentPane.add(txt_sanatci_ad);
+
+		txt_sanatci_ulke = new JTextField();
+		txt_sanatci_ulke.setText("");
+		txt_sanatci_ulke.setColumns(10);
+		txt_sanatci_ulke.setBounds(690, 517, 86, 20);
+		contentPane.add(txt_sanatci_ulke);
+
+		JLabel lbl_album = new JLabel("Album");
+		lbl_album.setBounds(902, 34, 45, 13);
+		contentPane.add(lbl_album);
+
+		JLabel lbl_sarkici1 = new JLabel("Sarkici");
+		lbl_sarkici1.setBounds(660, 414, 45, 13);
+		contentPane.add(lbl_sarkici1);
+
+		text_kul_id = new JTextField();
+		text_kul_id.setColumns(10);
+		text_kul_id.setBounds(1172, 53, 86, 20);
+		contentPane.add(text_kul_id);
+
+		text_kul_ad = new JTextField();
+		text_kul_ad.setColumns(10);
+		text_kul_ad.setBounds(1172, 84, 86, 20);
+		contentPane.add(text_kul_ad);
+
+		text_kul_uyelik = new JTextField();
+		text_kul_uyelik.setColumns(10);
+		text_kul_uyelik.setBounds(1172, 115, 86, 20);
+		contentPane.add(text_kul_uyelik);
+
+		JLabel lbl_Id_1 = new JLabel("Id");
+		lbl_Id_1.setBounds(1126, 56, 46, 14);
+		contentPane.add(lbl_Id_1);
+
+		JLabel lbl_ad_1 = new JLabel("Ad");
+		lbl_ad_1.setBounds(1126, 87, 46, 14);
+		contentPane.add(lbl_ad_1);
+
+		JLabel lbl_uyelik = new JLabel("Uyelik");
+		lbl_uyelik.setBounds(1126, 118, 46, 14);
+		contentPane.add(lbl_uyelik);
+
+		JLabel text_lul_eposta = new JLabel("e-posta");
+		text_lul_eposta.setBounds(1126, 146, 46, 20);
+		contentPane.add(text_lul_eposta);
+
+		JLabel text_kul_sifre = new JLabel("Sifre");
+		text_kul_sifre.setBounds(1126, 177, 46, 14);
+		contentPane.add(text_kul_sifre);
+
+		JLabel text_kul_ulke = new JLabel("Ulke");
+		text_kul_ulke.setBounds(1126, 202, 46, 19);
+		contentPane.add(text_kul_ulke);
+
+		textField_4 = new JTextField();
+		textField_4.setColumns(10);
+		textField_4.setBounds(1172, 146, 150, 20);
+		contentPane.add(textField_4);
+
+		textField_5 = new JTextField();
+		textField_5.setColumns(10);
+		textField_5.setBounds(1172, 174, 86, 20);
+		contentPane.add(textField_5);
+
+		textField_6 = new JTextField();
+		textField_6.setColumns(10);
+		textField_6.setBounds(1172, 201, 86, 20);
+		contentPane.add(textField_6);
+
+		JLabel lbl_kullanici = new JLabel("Kullanici");
+		lbl_kullanici.setBounds(1126, 33, 127, 14);
+		contentPane.add(lbl_kullanici);
+
+		JButton btnKaydet_1_2 = new JButton("Kaydet");
+		btnKaydet_1_2.setBackground(Color.CYAN);
+		btnKaydet_1_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String id, ad, ulke, sifre, eposta, uyelik, sql_sorgu, sql_tur;
+				int uyelik_id;
+				String uyelik_ids = "";
+
+				id = text_kul_id.getText();
+				ad = text_kul_ad.getText();
+				uyelik = text_kul_uyelik.getText();
+				eposta = textField_4.getText();
+				sifre = textField_5.getText();
+				ulke = textField_6.getText();
+
+				sql_tur = "select kul_uyelik_id from kullanici_islem where kul_uyelik='" + uyelik + "'";
+				ResultSet myRs = baglanti.yap2(sql_tur);
+				myRs = baglanti.sorgula1(sql_tur);
+				try {
+					while (myRs.next()) {
+						uyelik_id = myRs.getInt("kul_uyelik_id");
+						uyelik_ids = String.valueOf(uyelik_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				sql_sorgu = "INSERT INTO kullanici (kul_id,kul_ad,kul_uyelik_id,kul_email,kul_sifre,ulke) VALUES('" + id
+						+ "','" + ad + "','" + uyelik_ids + "','" + eposta + "','" + sifre + "','" + ulke + "')";
+
+				baglanti.ekle(sql_sorgu);
+
+				String sql_sorgu1 = "INSERT INTO liste(kullanici_id,tur_id)VALUES(" + id + ",1);";
+				baglanti.ekle(sql_sorgu1);
+				String sql_sorgu2 = "INSERT INTO liste(kullanici_id,tur_id)VALUES(" + id + ",2);";
+				baglanti.ekle(sql_sorgu2);
+				String sql_sorgu3 = "INSERT INTO liste(kullanici_id,tur_id)VALUES(" + id + ",3);";
+				baglanti.ekle(sql_sorgu3);
+
+			}
+		});
+		btnKaydet_1_2.setBounds(1112, 241, 89, 23);
+		contentPane.add(btnKaydet_1_2);
+
+		JButton btnUpdate_1_2 = new JButton("Update");
+		btnUpdate_1_2.setBackground(Color.GREEN);
+		btnUpdate_1_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String id, ad, ulke, sifre, eposta, uyelik, sql_sorgu, sql_tur;
+				int uyelik_id;
+				String uyelik_ids = "";
+
+				id = text_kul_id.getText();
+				ad = text_kul_ad.getText();
+				uyelik = text_kul_uyelik.getText();
+				eposta = textField_4.getText();
+				sifre = textField_5.getText();
+				ulke = textField_6.getText();
+
+				sql_tur = "select kul_uyelik_id from kullanici_islem where kul_uyelik='" + uyelik + "'";
+				ResultSet myRs = baglanti.yap2(sql_tur);
+				myRs = baglanti.sorgula1(sql_tur);
+				try {
+					while (myRs.next()) {
+						uyelik_id = myRs.getInt("kul_uyelik_id");
+						uyelik_ids = String.valueOf(uyelik_id);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				sql_sorgu = "UPDATE kullanici SET kul_id=" + id + "," + "kul_ad='" + ad + "',kul_uyelik_id='"
+						+ uyelik_ids + "',kul_email='" + eposta + "',kul_sifre='" + sifre + "',ulke='" + ulke
+						+ "' WHERE kul_id=" + id;
+				System.out.println(sql_sorgu);
+
+				baglanti.update(sql_sorgu);
+
+			}
+		});
+		btnUpdate_1_2.setBounds(1211, 241, 89, 23);
+		contentPane.add(btnUpdate_1_2);
+
+		JButton btnSil_1_2 = new JButton("Sil");
+		btnSil_1_2.setForeground(Color.WHITE);
+		btnSil_1_2.setBackground(Color.RED);
+		btnSil_1_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String id, sql_sorgu;
+				id = text_kul_id.getText();
+				sql_sorgu = "DELETE FROM kullanici WHERE kul_id=" + id;
+				baglanti.sil(sql_sorgu);
+
+			}
+		});
+		btnSil_1_2.setBounds(1165, 272, 89, 23);
+		contentPane.add(btnSil_1_2);
+
+		JButton btn_kullanici_listele = new JButton("Kullanici Listele");
+		btn_kullanici_listele.setBackground(new Color(147, 112, 219));
+		btn_kullanici_listele.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				sayac = 4;
+
+				modelim3.setColumnIdentifiers(kolonlar3);
+				modelim3.setRowCount(0);
+				ResultSet myRs = baglanti.yap(9);
+
+				try {
+					while (myRs.next()) {
+						satirlar3[0] = myRs.getString("kul_id");
+						satirlar3[1] = myRs.getString("kul_ad");
+						satirlar3[2] = myRs.getString("kul_uyelik");
+						satirlar3[3] = myRs.getString("kul_email");
+						satirlar3[4] = myRs.getString("kul_sifre");
+						satirlar3[5] = myRs.getString("ulke");
+						modelim3.addRow(satirlar3);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim3);
+
+			}
+		});
+		btn_kullanici_listele.setBounds(472, 8, 150, 50);
+		contentPane.add(btn_kullanici_listele);
+
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setIcon(new ImageIcon(giris.adres));
+		lblNewLabel_2.setBounds(0, 0, 1360, 760);
+		contentPane.add(lblNewLabel_2);
+
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (sayac == 1) {
+					txt_id.setText(modelim.getValueAt(table.getSelectedRow(), 0).toString());
+					txt_ad.setText((String) modelim.getValueAt(table.getSelectedRow(), 1));
+					txt_tarih.setText((String) modelim.getValueAt(table.getSelectedRow(), 2));
+					txt_tur.setText((String) modelim.getValueAt(table.getSelectedRow(), 3));
+					txt_sure.setText((String) modelim.getValueAt(table.getSelectedRow(), 4));
+					txt_dinlenme.setText((String) modelim.getValueAt(table.getSelectedRow(), 5));
+					txt_album.setText((String) modelim.getValueAt(table.getSelectedRow(), 6));
+					txt_sanatci.setText((String) modelim.getValueAt(table.getSelectedRow(), 7));
+
+					fonksiyon1();
+					fonksiyon();
+					fonksiyon3();
+				}
+				if (sayac == 2) {
+					txt_album_id.setText(modelim1.getValueAt(table.getSelectedRow(), 0).toString());
+					txt_album_ad.setText((String) modelim1.getValueAt(table.getSelectedRow(), 1));
+					txt_album_sanatci.setText((String) modelim1.getValueAt(table.getSelectedRow(), 2));
+					txt_album_tarih.setText((String) modelim1.getValueAt(table.getSelectedRow(), 3));
+					txt_album_tur.setText((String) modelim1.getValueAt(table.getSelectedRow(), 4));
+
+					fonksiyon();
+					fonksiyon2();
+					fonksiyon3();
+				}
+
+				if (sayac == 3) {
+					txt_sanatci_id.setText(modelim2.getValueAt(table.getSelectedRow(), 0).toString());
+					txt_sanatci_ad.setText((String) modelim2.getValueAt(table.getSelectedRow(), 1));
+					txt_sanatci_ulke.setText((String) modelim2.getValueAt(table.getSelectedRow(), 2));
+
+					fonksiyon3();
+					fonksiyon1();
+					fonksiyon2();
+
+				}
+
+				if (sayac == 4) {
+					text_kul_id.setText(modelim3.getValueAt(table.getSelectedRow(), 0).toString());
+					text_kul_ad.setText((String) modelim3.getValueAt(table.getSelectedRow(), 1));
+					text_kul_uyelik.setText((String) modelim3.getValueAt(table.getSelectedRow(), 2));
+					textField_4.setText((String) modelim3.getValueAt(table.getSelectedRow(), 3));
+					textField_5.setText((String) modelim3.getValueAt(table.getSelectedRow(), 4));
+					textField_6.setText((String) modelim3.getValueAt(table.getSelectedRow(), 5));
+
+					fonksiyon2();
+					fonksiyon();
+					fonksiyon1();
+
+				}
+
+			}
+		});
+	}
+
+	void fonksiyon() {
+		txt_sanatci_id.setText("");
+		txt_sanatci_ad.setText("");
+		txt_sanatci_ulke.setText("");
+	}
+
+	void fonksiyon1() {
+		txt_album_id.setText("");
+		txt_album_ad.setText("");
+		txt_album_sanatci.setText("");
+		txt_album_tarih.setText("");
+		txt_album_tur.setText("");
+	}
+
+	void fonksiyon2() {
+		txt_id.setText("");
+		txt_ad.setText("");
+		txt_tarih.setText("");
+		txt_tur.setText("");
+		txt_sure.setText("");
+		txt_dinlenme.setText("");
+		txt_album.setText("");
+		txt_sanatci.setText("");
+	}
+
+	void fonksiyon3() {
+		text_kul_id.setText("");
+		text_kul_ad.setText("");
+		text_kul_uyelik.setText("");
+		textField_4.setText("");
+		textField_5.setText("");
+		textField_6.setText("");
+	}
+
+}
+
+class kullanici extends JFrame {
+
+	String metin = "";
+	String metin1 = "";
+	String metin2 = "";
+	String sarki_id = "";
+	String ulke_id = "";
+	String k_id = "";
+	private JPanel contentPane;
+	DefaultTableModel modelim = new DefaultTableModel();
+	Object[] kolonlar = { "Id", "Ad", "Tarih", "Tur", "Sure", "Dinlenme", "Album", "Sanatci" };
+	Object[] satirlar = new Object[8];
+	DefaultTableModel modelim1 = new DefaultTableModel();
+	Object[] kolonlar1 = { "Id", "Album Ad", "Sanatci", "Tarih", "Tur" };
+	Object[] satirlar1 = new Object[5];
+	DefaultTableModel modelim2 = new DefaultTableModel();
+	Object[] kolonlar2 = { "Id", "Kullanici Ad", "Tur" };
+	Object[] satirlar2 = new Object[3];
+	DefaultTableModel modelim3 = new DefaultTableModel();
+	Object[] kolonlar3 = { "Id", "Kullanici Ad" };
+	Object[] satirlar3 = new Object[2];
+	DefaultTableModel modelim4 = new DefaultTableModel();
+	Object[] kolonlar4 = { "Id", "Kullanici Ad" };
+	Object[] satirlar4 = new Object[2];
+	DefaultTableModel modelim5 = new DefaultTableModel();
+	Object[] kolonlar5 = { "Id", "Ulke Ad" };
+	Object[] satirlar5 = new Object[2];
+	DefaultTableModel modelim6 = new DefaultTableModel();
+	Object[] kolonlar6 = { "Id", "Odenme Durumu" };
+	Object[] satirlar6 = new Object[2];
+	private JTable table;
+	static int sayac = 0;
+	String kullanici_id = "";
+	String kullanici_ad = "";
+
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					kullanici frame = new kullanici();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	public kullanici() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(0, 0, 1361, 720);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JScrollPane scrollPane = new JScrollPane();
+
+		scrollPane.setBounds(229, 97, 822, 573);
+		contentPane.add(scrollPane);
+		table = new JTable();
+		table.setBounds(158, 219, 256, 123);
+		scrollPane.setViewportView(table);
+		JButton btnListele = new JButton("Sarki Listele");
+		btnListele.setBackground(new Color(51, 153, 204));
+		btnListele.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ResultSet myRs = baglanti.yap(0);
+				fonksiyon2(myRs);
+
+			}
+		});
+		btnListele.setBounds(972, 27, 150, 50);
+		contentPane.add(btnListele);
+
+		JButton btn_odeme_yap = new JButton("odeme_yap");
+		btn_odeme_yap.setBackground(new Color(144, 238, 144));
+		JButton btn_odeme_kontrol = new JButton("odeme_kontrol");
+		btn_odeme_kontrol.setBackground(new Color(144, 238, 144));
+		JButton btn_takipciler = new JButton("takipciler");
+		btn_takipciler.setBackground(new Color(255, 255, 102));
+
+		if (giris.tur == 1) {
+			btn_odeme_yap.setVisible(false);
+			btn_odeme_kontrol.setVisible(false);
+			btn_takipciler.setVisible(false);
+		}
+
+		JButton btn_kaldir = new JButton("Kaldir");
+		btn_kaldir.setBackground(new Color(152, 251, 152));
+		btn_kaldir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String sorgu_kullanici = "select kul_id from kullanici where kul_ad ='" + giris.ad + "'";
+				kullanici_ad = giris.ad;
+				ResultSet myRs2 = baglanti.yap2(sorgu_kullanici);
+				try {
+					while (myRs2.next()) {
+						kullanici_id = myRs2.getString("kul_id");
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				String sql_sorgu_tur = "select tur_id from sarki where sarki_id='" + sarki_id + "'";
+				String tur_id = "";
+				ResultSet myRs = baglanti.yap2(sql_sorgu_tur);
+				try {
+					while (myRs.next()) {
+
+						tur_id = myRs.getString("tur_id");
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				String liste_id = "";
+				ResultSet myRs1 = baglanti.sorgulama_3(kullanici_id, tur_id);
+
+				try {
+					while (myRs1.next()) {
+						liste_id = myRs1.getString("liste_id");
+
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				String sql_sorgu_sil = "DELETE FROM liste_islem WHERE sarki_id='" + sarki_id + "' and liste_id='"
+						+ liste_id + "'";
+
+				baglanti.sil(sql_sorgu_sil);
+			}
+		});
+		btn_kaldir.setBounds(1124, 620, 150, 50);
+		contentPane.add(btn_kaldir);
+
+		JLabel lblNewLabel = new JLabel("Alan:");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel.setBounds(552, 27, 150, 60);
+		contentPane.add(lblNewLabel);
+
+		contentPane.add(lblNewLabel);
+		lblNewLabel.setText(giris.ad);
+
+		JButton btnAlbumListele = new JButton("Album Listele");
+		btnAlbumListele.setBackground(new Color(51, 153, 204));
+		btnAlbumListele.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sayac = 2;
+
+				modelim1.setColumnIdentifiers(kolonlar1);
+				modelim1.setRowCount(0);
+				ResultSet myRs = baglanti.yap(1);
+
+				try {
+					while (myRs.next()) {
+						satirlar1[0] = myRs.getString("album_id");
+						satirlar1[1] = myRs.getString("album_ad");
+						satirlar1[2] = myRs.getString("sanatci_ad");
+						satirlar1[3] = myRs.getString("tarih");
+						satirlar1[4] = myRs.getString("tur_ad");
+
+						modelim1.addRow(satirlar1);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim1);
+
+			}
+		});
+		btnAlbumListele.setBounds(377, 27, 150, 50);
+		contentPane.add(btnAlbumListele);
+
+		JButton btnNewButton = new JButton("Premium Kullan\u0131c\u0131lar");
+		btnNewButton.setBackground(new Color(51, 153, 204));
+		btnNewButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				sayac = 5;
+
+				modelim4.setColumnIdentifiers(kolonlar4);
+				modelim4.setRowCount(0);
+				ResultSet myRs = baglanti.yap(3);
+
+				try {
+					while (myRs.next()) {
+
+						satirlar4[0] = myRs.getString("kul_id");
+						satirlar4[1] = myRs.getString("kul_ad");
+
+						modelim4.addRow(satirlar4);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim4);
+
+			}
+		});
+		btnNewButton.setBounds(168, 27, 150, 50);
+		contentPane.add(btnNewButton);
+
+		JButton btn_gecis = new JButton("gecis");
+		btn_gecis.setForeground(Color.WHITE);
+		btn_gecis.setBackground(new Color(139, 0, 0));
+		btn_gecis.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				ResultSet myRs = baglanti.sorgulama_1(metin);
+				fonksiyon2(myRs);
+
+			}
+		});
+		btn_gecis.setBounds(1124, 437, 150, 50);
+		contentPane.add(btn_gecis);
+
+		JButton btn_benim_listem = new JButton("benim listem");
+		btn_benim_listem.setForeground(new Color(255, 255, 255));
+		btn_benim_listem.setBackground(new Color(51, 51, 153));
+		btn_benim_listem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				fonksiyon();
+
+				sayac = 3;
+
+				modelim2.setColumnIdentifiers(kolonlar2);
+				modelim2.setRowCount(0);
+				ResultSet myRs1 = baglanti.sorgulama_2(kullanici_id);
+
+				try {
+					while (myRs1.next()) {
+
+						satirlar2[0] = myRs1.getString("liste_id");
+						satirlar2[1] = myRs1.getString("kul_ad");
+						satirlar2[2] = myRs1.getString("tur_ad");
+
+						modelim2.addRow(satirlar2);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim2);
+
+			}
+		});
+		btn_benim_listem.setBounds(788, 27, 150, 50);
+		contentPane.add(btn_benim_listem);
+
+		JButton btn_ekle = new JButton("ekle");
+		btn_ekle.setBackground(new Color(152, 251, 152));
+		btn_ekle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				fonksiyon();
+
+				String sql_sorgu_tur = "select tur_id from sarki where sarki_id='" + sarki_id + "'";
+				String tur_id = "";
+				ResultSet myRs = baglanti.yap2(sql_sorgu_tur);
+				try {
+					while (myRs.next()) {
+
+						tur_id = myRs.getString("tur_id");
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				String liste_id = "";
+				ResultSet myRs1 = baglanti.sorgulama_3(kullanici_id, tur_id);
+
+				try {
+					while (myRs1.next()) {
+						liste_id = myRs1.getString("liste_id");
+
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				String sql_sorgu = "INSERT INTO liste_islem (liste_id,sarki_id) VALUES(" + liste_id + ",'" + sarki_id
+						+ "')";
+
+				baglanti.ekle(sql_sorgu);
+
+			}
+		});
+		btn_ekle.setBounds(1124, 559, 150, 50);
+		contentPane.add(btn_ekle);
+
+		JButton btnNewButton_1 = new JButton("Takip Et");
+		btnNewButton_1.setBackground(new Color(255, 255, 102));
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sayac = 4;
+
+				fonksiyon();
+
+				String sql_sorgu = "INSERT INTO takip (takip_eden_id,takip_edilen_id) VALUES(" + kullanici_id + ",'"
+						+ metin1 + "')";
+
+				baglanti.ekle(sql_sorgu);
+
+			}
+
+		});
+		btnNewButton_1.setBounds(1124, 193, 150, 50);
+		contentPane.add(btnNewButton_1);
+
+		JButton btnNewButton_2 = new JButton("Takip Ettiklerim");
+		btnNewButton_2.setBackground(new Color(255, 255, 102));
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sayac = 4;
+
+				fonksiyon();
+
+				modelim3.setColumnIdentifiers(kolonlar3);
+				modelim3.setRowCount(0);
+
+				ResultSet myRs = baglanti.sorgulama_4(kullanici_id);
+
+				try {
+					while (myRs.next()) {
+
+						satirlar3[0] = myRs.getString("kul_id");
+						satirlar3[1] = myRs.getString("kul_ad");
+
+						modelim3.addRow(satirlar3);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim3);
+
+			}
+		});
+		btnNewButton_2.setBounds(1124, 315, 150, 50);
+		contentPane.add(btnNewButton_2);
+
+		JButton btnNewButton_3 = new JButton("Takipten \u00C7\u0131kar");
+		btnNewButton_3.setBackground(new Color(255, 255, 102));
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				sayac = 4;
+				fonksiyon();
+
+				String sql_sorgu = "DELETE FROM takip WHERE takip.takip_eden_id='" + kullanici_id
+						+ "' and takip.takip_edilen_id='" + metin2 + "'";
+
+				baglanti.sil(sql_sorgu);
+
+			}
+		});
+		btnNewButton_3.setBounds(1124, 254, 150, 50);
+		contentPane.add(btnNewButton_3);
+
+		JButton btnNewButton_4 = new JButton("Takip Listesi Gecis");
+		btnNewButton_4.setBackground(new Color(255, 255, 102));
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				sayac = 3;
+				modelim2.setColumnIdentifiers(kolonlar2);
+				modelim2.setRowCount(0);
+				ResultSet myRs = baglanti.sorgulama_5(metin2);
+
+				try {
+					while (myRs.next()) {
+
+						satirlar2[0] = myRs.getString("liste_id");
+						satirlar2[1] = myRs.getString("kul_ad");
+						satirlar2[2] = myRs.getString("tur_ad");
+
+						modelim2.addRow(satirlar2);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim2);
+
+			}
+		});
+		btnNewButton_4.setBounds(1124, 376, 150, 50);
+		contentPane.add(btnNewButton_4);
+
+		JButton btn_dinle = new JButton("dinle");
+		btn_dinle.setForeground(new Color(255, 255, 255));
+		btn_dinle.setBackground(new Color(0, 0, 0));
+		btn_dinle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				int dinlenme = 0;
+				ResultSet myRs = baglanti.sorgulama_6(sarki_id);
+				try {
+					while (myRs.next()) {
+
+						dinlenme = myRs.getInt("sarki_dinlenme");
+
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				dinlenme += 1;
+				String dinl = Integer.toString(dinlenme);
+				String sql_sorgu = "UPDATE sarki SET sarki_dinlenme='" + dinl + "' WHERE sarki_id='" + sarki_id + "'";
+
+				baglanti.update(sql_sorgu);
+
+			}
+		});
+		btn_dinle.setBounds(22, 247, 150, 50);
+		contentPane.add(btn_dinle);
+
+		JButton btn_ulke = new JButton("ulkeler");
+		btn_ulke.setBackground(new Color(255, 239, 213));
+		btn_ulke.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				sayac = 6;
+				modelim5.setColumnIdentifiers(kolonlar5);
+				modelim5.setRowCount(0);
+				ResultSet myRs = baglanti.yap(4);
+
+				try {
+					while (myRs.next()) {
+
+						satirlar5[0] = myRs.getString("ulke_id");
+						satirlar5[1] = myRs.getString("ulke_ad");
+
+						modelim5.addRow(satirlar5);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim5);
+			}
+		});
+		btn_ulke.setBounds(22, 368, 150, 50);
+		contentPane.add(btn_ulke);
+
+		JButton btn_ulke_sarki = new JButton("Ulkeler_Top10");
+		btn_ulke_sarki.setBackground(new Color(255, 239, 213));
+		btn_ulke_sarki.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ResultSet myRs = baglanti.sorgulama_7(ulke_id);
+				fonksiyon2(myRs);
+
+			}
+		});
+		btn_ulke_sarki.setBounds(22, 308, 150, 50);
+		contentPane.add(btn_ulke_sarki);
+
+		JButton btn_ecd10s = new JButton("Top10");
+		btn_ecd10s.setBackground(new Color(153, 255, 204));
+		btn_ecd10s.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				ResultSet myRs = baglanti.yap(5);
+				fonksiyon2(myRs);
+
+			}
+		});
+		btn_ecd10s.setBounds(22, 428, 150, 50);
+		contentPane.add(btn_ecd10s);
+
+		JButton btn_pop_ecd = new JButton("Pop_Top10");
+		btn_pop_ecd.setBackground(new Color(153, 255, 204));
+		btn_pop_ecd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				ResultSet myRs = baglanti.yap(7);
+				fonksiyon2(myRs);
+
+			}
+		});
+		btn_pop_ecd.setBounds(22, 488, 150, 50);
+		contentPane.add(btn_pop_ecd);
+
+		JButton btn_jazz_ecd = new JButton("Jazz_Top10");
+		btn_jazz_ecd.setBackground(new Color(153, 255, 204));
+		btn_jazz_ecd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				ResultSet myRs = baglanti.yap(6);
+				fonksiyon2(myRs);
+
+			}
+		});
+		btn_jazz_ecd.setBounds(22, 620, 150, 50);
+		contentPane.add(btn_jazz_ecd);
+
+		JButton btn_kalsik_ecd = new JButton("Klasik_Top10");
+		btn_kalsik_ecd.setBackground(new Color(153, 255, 204));
+		btn_kalsik_ecd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				ResultSet myRs = baglanti.yap(8);
+				fonksiyon2(myRs);
+
+			}
+		});
+		btn_kalsik_ecd.setBounds(22, 553, 150, 50);
+		contentPane.add(btn_kalsik_ecd);
+
+		btn_takipciler.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				sayac = 4;
+
+				fonksiyon();
+
+				modelim3.setColumnIdentifiers(kolonlar3);
+				modelim3.setRowCount(0);
+
+				ResultSet myRs = baglanti.sorgulama_8(kullanici_id);
+
+				try {
+					while (myRs.next()) {
+
+						satirlar3[0] = myRs.getString("kul_id");
+						satirlar3[1] = myRs.getString("kul_ad");
+
+						modelim3.addRow(satirlar3);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim3);
+				System.out.println(giris.k_id);
+
+			}
+		});
+		btn_takipciler.setBounds(1124, 132, 150, 50);
+		contentPane.add(btn_takipciler);
+
+		btn_odeme_kontrol.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				fonksiyon();
+				modelim6.setColumnIdentifiers(kolonlar6);
+				modelim6.setRowCount(0);
+				ResultSet myRs = baglanti.sorgulama_9(kullanici_id);
+
+				try {
+					while (myRs.next()) {
+
+						satirlar6[0] = myRs.getString("kul_id");
+						if (myRs.getBoolean("odenme")) {
+							satirlar6[1] = "Odemesi yapildi";
+						} else {
+							satirlar6[1] = "Odemesi yapilmadi";
+						}
+
+						modelim6.addRow(satirlar6);
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				table.setModel(modelim6);
+
+			}
+		});
+		btn_odeme_kontrol.setBounds(22, 125, 150, 50);
+		contentPane.add(btn_odeme_kontrol);
+
+		btn_odeme_yap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				fonksiyon();
+
+				String sql_sorgu = "UPDATE odenme SET odenme= true WHERE kul_id='" + kullanici_id + "'";
+
+				baglanti.update(sql_sorgu);
+
+			}
+		});
+		btn_odeme_yap.setBounds(22, 186, 150, 50);
+		contentPane.add(btn_odeme_yap);
+
+		JButton btn_tumunu_ekle = new JButton("tumunu_ekle");
+		btn_tumunu_ekle.setBackground(new Color(152, 251, 152));
+		btn_tumunu_ekle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				fonksiyon();
+				ArrayList<String> sarkilar = new ArrayList<>();
+				String tur_id = "";
+				ResultSet myRs2 = baglanti.sorgulama_11(metin);
+				try {
+					while (myRs2.next()) {
+
+						tur_id = myRs2.getString("tur_id");
+
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				ResultSet myRs = baglanti.sorgulama_10(metin);
+				try {
+					while (myRs.next()) {
+
+						sarkilar.add(myRs.getString("sarki_id"));
+
+					}
+
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				String liste_id = "";
+				ResultSet myRs1 = baglanti.sorgulama_3(kullanici_id, tur_id);
+
+				try {
+					while (myRs1.next()) {
+						liste_id = myRs1.getString("liste_id");
+
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+
+				for (int i = 0; i < sarkilar.size(); i++) {
+					String sql_sorgu = "INSERT INTO liste_islem (liste_id,sarki_id) VALUES(" + liste_id + ",'"
+							+ sarkilar.get(i) + "')";
+					baglanti.ekle(sql_sorgu);
+
+				}
+
+			}
+		});
+		btn_tumunu_ekle.setBounds(1124, 498, 150, 50);
+		contentPane.add(btn_tumunu_ekle);
+
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon(giris.adres));
+		lblNewLabel_1.setBounds(0, 0, 1360, 720);
+		contentPane.add(lblNewLabel_1);
+
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				if (sayac == 1) {
+
+					sarki_id = modelim.getValueAt(table.getSelectedRow(), 0).toString();
+
+				}
+				if (sayac == 3) {
+					metin = modelim2.getValueAt(table.getSelectedRow(), 0).toString();
+
+				}
+				if (sayac == 4) {
+					metin2 = modelim3.getValueAt(table.getSelectedRow(), 0).toString();
+
+				}
+				if (sayac == 5) {
+					metin1 = modelim4.getValueAt(table.getSelectedRow(), 0).toString();
+				}
+				if (sayac == 6) {
+
+					ulke_id = modelim5.getValueAt(table.getSelectedRow(), 0).toString();
+
+				}
+
+			}
+		});
+	}
+
+	void fonksiyon() {
+		String sorgu = "select kul_id from kullanici where kul_ad ='" + giris.ad + "'";
+		kullanici_ad = giris.ad;
+		ResultSet myRs = baglanti.yap2(sorgu);
+		try {
+			while (myRs.next()) {
+				kullanici_id = myRs.getString("kul_id");
+				k_id = kullanici_id;
+			}
+
+		} catch (Exception e2) {
+			// TODO: handle exception
+			e2.printStackTrace();
+		}
+	}
+
+	void fonksiyon2(ResultSet myRs) {
+		sayac = 1;
+
+		modelim.setColumnIdentifiers(kolonlar);
+		modelim.setRowCount(0);
+
+		try {
+			while (myRs.next()) {
+				satirlar[0] = myRs.getString("sarki_id");
+				satirlar[1] = myRs.getString("sarki_adi");
+				satirlar[2] = myRs.getString("sarki_tarih");
+				satirlar[3] = myRs.getString("tur_ad");
+				satirlar[4] = myRs.getString("sarki_sure");
+				satirlar[5] = myRs.getString("sarki_dinlenme");
+
+				satirlar[6] = myRs.getString("album_ad");
+				satirlar[7] = myRs.getString("sanatci_ad");
+
+				modelim.addRow(satirlar);
+			}
+
+		} catch (Exception e2) {
+			// TODO: handle exception
+			e2.printStackTrace();
+		}
+		table.setModel(modelim);
+
+	}
+
+}

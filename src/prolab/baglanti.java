@@ -66,7 +66,7 @@ public class baglanti {
 
 	static ResultSet sorgulama_7(String metin) {
 		String s = "select sarki.sarki_id,sarki_adi,sarki_tarih,tur_ad ,sarki_sure,sarki_dinlenme,album_ad,sanatci_ad from sanatci,sarki,album,tur where sarki.tur_id =tur.tur_id and sarki.album_id=album.album_id and sanatci.ulke_id='"
-				+ metin + "' and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC";
+				+ metin + "' and sarki.sanatci_id = sanatci.sanatci_id ORDER BY sarki_dinlenme DESC LIMIT 10";
 		ResultSet myRs = yap3(s);
 		return myRs;
 	};

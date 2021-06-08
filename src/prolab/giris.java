@@ -20,7 +20,7 @@ public class giris extends JFrame {
 	private JPanel contentPane;
 	private JTextField txt_ad;
 	private JTextField txt_sifre;
-	static String ad, sifre, k_id, adres = "C:\\Users\\Oðuzhan Koç\\OneDrive\\Masaüstü\\prolab\\src\\beyaz.jpg";
+	static String ad, sifre, k_id, adres = "C:\\Users\\Arslan\\Desktop\\prolab2.3\\src\\beyaz.jpg";
 
 	static int tur, sayac = 0;
 
